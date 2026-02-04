@@ -1,27 +1,31 @@
-using SYSS8.OPF.Clean.WebUi.Components;
-
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Register global UI status service (one source of truth)
+builder.Services.AddScoped<IUiStatus, UiStatus>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
 }
 
-app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+app.UseRouting();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
+app.MapRazorComponents<SYSS8.OPF.Clean.WebUi.Components.App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
