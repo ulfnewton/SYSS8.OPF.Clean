@@ -13,10 +13,11 @@ builder.Services.AddDbContext<AuthorDbContext>(
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", p =>
-        p.AllowAnyOrigin()     // DEV: enkelt; kan låsas till WithOrigins("https://localhost:<ui-port>")
+        p.AllowAnyOrigin()
          .AllowAnyHeader()
          .AllowAnyMethod());
 });
@@ -30,8 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.Urls.Add("https://localhost:5001");
 
+app.Urls.Add("https://localhost:5001");
 app.UseHttpsRedirection();
 app.UseCors("DevCors");
 
