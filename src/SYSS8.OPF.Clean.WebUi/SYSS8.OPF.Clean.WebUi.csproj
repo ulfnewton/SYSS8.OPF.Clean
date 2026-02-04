@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\SYSS8.OPF.Clean.Application\SYSS8.OPF.Clean.Application.csproj" />
+    <ProjectReference Include="..\SYSS8.OPF.Clean.Domain\SYSS8.OPF.Clean.Domain.csproj" />
+    <ProjectReference Include="..\SYSS8.OPF.Clean.WebApi\SYSS8.OPF.Clean.WebApi.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

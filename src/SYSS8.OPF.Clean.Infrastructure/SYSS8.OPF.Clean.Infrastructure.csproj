@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.23" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SYSS8.OPF.Clean.Application\SYSS8.OPF.Clean.Application.csproj" />
+	  <ProjectReference Include="..\SYSS8.OPF.Clean.Domain\SYSS8.OPF.Clean.Domain.csproj" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+</Project>

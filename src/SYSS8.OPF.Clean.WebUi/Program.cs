@@ -1,4 +1,4 @@
-using WebUi.Components;
+using SYSS8.OPF.Clean.WebUi.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
