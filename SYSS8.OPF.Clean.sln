@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11429.125 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}"
 EndProject
@@ -15,13 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SYSS8.OPF.Clean.WebApi", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SYSS8.OPF.Clean.WebUi", "src\SYSS8.OPF.Clean.WebUi\SYSS8.OPF.Clean.WebUi.csproj", "{A732E8DD-3305-43B2-9148-E67C58ECB511}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}"
+	ProjectSection(SolutionItems) = preProject
+		docs\workshop-instructions-2026-02-05.md = docs\workshop-instructions-2026-02-05.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{15491974-4DD6-45D9-9572-CD6357B76F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,11 +47,17 @@ Global
 		{A732E8DD-3305-43B2-9148-E67C58ECB511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A732E8DD-3305-43B2-9148-E67C58ECB511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{15491974-4DD6-45D9-9572-CD6357B76F8C} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{B12D1FFB-8A56-4A48-A28B-B5087DD6639F} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{D3FF82D8-C69D-423D-B1F5-AACDF37730EB} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{5741CDAD-A4F7-4724-8A25-6AE81474EECB} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{A732E8DD-3305-43B2-9148-E67C58ECB511} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}
 	EndGlobalSection
 EndGlobal
