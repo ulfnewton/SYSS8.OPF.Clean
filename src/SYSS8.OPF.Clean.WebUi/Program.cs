@@ -9,6 +9,12 @@ builder.Services.AddRazorComponents()
 // Register global UI status service (one source of truth)
 builder.Services.AddScoped<IUiStatus, UiStatus>();
 
+builder.Services.AddHttpClient("WebApi", c =>
+{
+    c.BaseAddress = new Uri("https://localhost:5001"); // matchar WebApi
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
