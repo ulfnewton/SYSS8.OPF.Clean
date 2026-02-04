@@ -8,6 +8,7 @@ builder.Services.AddRazorComponents()
 
 // Register global UI status service (one source of truth)
 builder.Services.AddScoped<IUiStatus, UiStatus>();
+builder.Services.AddScoped<IUiOperations, UiOperations>();
 
 builder.Services.AddHttpClient("WebApi", c =>
 {
