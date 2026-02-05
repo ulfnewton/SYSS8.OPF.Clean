@@ -61,8 +61,7 @@ dotnet new classlib -n SYSS8.OPF.Clean.Application     -o src/SYSS8.OPF.Clean.Ap
 dotnet new classlib -n SYSS8.OPF.Clean.Infrastructure  -o src/SYSS8.OPF.Clean.Infrastructure
 
 dotnet new web     -n SYSS8.OPF.Clean.WebApi          -o src/SYSS8.OPF.Clean.WebApi
-dotnet new blazor  --interactivity Server              \
-                   -n SYSS8.OPF.Clean.WebUi           -o src/SYSS8.OPF.Clean.WebUi -f net8.0
+dotnet new blazor  --interactivity Server -n SYSS8.OPF.Clean.WebUi -o src/SYSS8.OPF.Clean.WebUi -f net8.0
 
 dotnet sln add src/*/*.csproj
 ```
