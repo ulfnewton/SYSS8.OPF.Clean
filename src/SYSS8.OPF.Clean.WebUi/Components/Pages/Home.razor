@@ -1,7 +1,38 @@
-﻿@page "/"
+@page "/"
+@inject AuthState Auth 
+@inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Oautentiserad vy - logga in nedan</h1>
 
-Welcome to your new app.
+<EditForm Model="input" OnValidSubmit="Login" FormName="login">
+    <label>Roll</label>
+    <InputSelect @bind-Value="input.Role">
+        <option value="Student">Student</option>
+        <option value="Lärare">Lärare</option>
+        <option value="Admin">Admin</option>
+    </InputSelect>
+    <div class="mb-2">
+        <label>Namn</label>
+        <InputText @bind-Value="input.Name" />
+    </div>
+    <button>Logga in</button>
+</EditForm>
+
+@code {
+    Input input = new();
+
+    void Login()
+    {
+        Auth.SignIn(input.Role, input.Name);
+        Navigation.NavigateTo("/library");
+    }
+
+    // [Inject] AuthState State { get; set; }
+    public class Input
+    {
+        public string Role { get; set; } = "Student";
+        public string Name { get; set; } = "NoName";
+    }
+}

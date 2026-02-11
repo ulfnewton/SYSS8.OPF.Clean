@@ -1,0 +1,78 @@
+@page "/library"
+@namespace SYSS8.OPF.Clean.WebUi.Components.Pages
+@using SYSS8.OPF.Clean.WebApi.Contracts
+@inject ApiClient Api
+@inject AuthState Auth
+@inject IUiStatus UI
+
+<h3>Authors</h3>
+
+@if (!Auth.IsAuthenticated)
+{
+        <p>Inte inloggad. <a href="/">Logga in</a>.</p>
+}
+else
+{
+    <p>Inloggad som <b>@Auth.PreferredNamed</b> (@Auth.Role)</p>
+    <button @onclick="Load">Ladda lista</button>
+
+    @if (_authors is null)
+    {
+        <p><em>Ingen data ännu.</em></p>
+    }
+    else if (_authors.Count == 0)
+    {
+        <p>Tomt.</p>
+    }
+    else
+    {
+        <ul>
+            @foreach(var author in _authors)
+            {
+                
+            }
+        </ul>
+    }
+}
+
+@code {
+    List<AuthorDTO> _authors = [];
+    CreateAuthorDTO _create = new();
+
+    async Task Load()
+    {
+        try
+        {
+            UI.Busy(true);
+            _authors = await Api.GetAuthorAsync();
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
+    }
+
+    async Task Create()
+    {
+        try
+        {
+            UI.Busy(true);
+            await Api.CreateAuthorAsync(_create.Name);
+            _create = new();
+            await Load();
+        }
+        catch(ApiProblemException ex)
+        {
+            UI.SetError(new UiError("Fel", ex.Message));
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
+    }
+
+    public class CreateAuthorDTO
+    {
+        public string Name { get; set; }
+    }
+}

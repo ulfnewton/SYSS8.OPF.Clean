@@ -21,6 +21,22 @@ builder.Services.AddCors(options =>
          .AllowAnyMethod());
 });
 
+builder.Services.AddAuthenticationCore(
+    option =>
+    {
+        option.RequireAuthenticatedSignIn = true;
+    });
+
+builder.Services.AddAuthorizationCore(
+    option => {
+        option.AddPolicy("CanCreateAuthor",
+            builder =>
+            {
+                builder.RequireRole("Admin");
+                builder.RequireRole("Lärare");
+            });
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
