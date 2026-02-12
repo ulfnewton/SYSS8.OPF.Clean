@@ -24,6 +24,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{5D7ACC49-7
 		http\authors.http = http\authors.http
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v7", "v7", "{BB63DC20-34BF-404D-A3AF-5B45235080D8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\1-index.md = docs\v7\1-index.md
+		docs\v7\ca-1-00-overview.md = docs\v7\ca-1-00-overview.md
+		docs\v7\ca-1-10-authn-authz-basics.md = docs\v7\ca-1-10-authn-authz-basics.md
+		docs\v7\ca-1-20-jwt-basics.md = docs\v7\ca-1-20-jwt-basics.md
+		docs\v7\ca-1-25-the-boarding-pass.md = docs\v7\ca-1-25-the-boarding-pass.md
+		docs\v7\ca-1-30-pipeline-concepts.md = docs\v7\ca-1-30-pipeline-concepts.md
+		docs\v7\ca-1-40-policies-and-ui.md = docs\v7\ca-1-40-policies-and-ui.md
+		docs\v7\ca-1-50-verification.md = docs\v7\ca-1-50-verification.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +72,7 @@ Global
 		{D3FF82D8-C69D-423D-B1F5-AACDF37730EB} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{5741CDAD-A4F7-4724-8A25-6AE81474EECB} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{A732E8DD-3305-43B2-9148-E67C58ECB511} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
+		{BB63DC20-34BF-404D-A3AF-5B45235080D8} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}

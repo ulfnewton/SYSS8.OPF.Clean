@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="220" aria-label="Auth-flow">
+  <style>
+    .b{font:15px sans-serif; fill:#111}
+    .box{stroke:#555; fill:#f7f7f7}
+    .u{fill:#eef7ff}
+    .a{fill:#fff7e6}
+    .z{fill:#eaffea}
+    .r{fill:#ffeaea}
+    .cap{font:12px sans-serif; fill:#444}
+    .arrow{stroke:#666; stroke-width:2; marker-end:url(#m)}
+  </style>
+  <defs>
+    <marker id="m" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <rect x="20" y="40" width="180" height="60" class="box u"/>
+  <text x="30" y="65" class="b">Klient (Blazor)</text>
+  <text x="30" y="85" class="cap">HTTP-anrop</text>
+
+  <rect x="240" y="40" width="180" height="60" class="box"/>
+  <text x="250" y="65" class="b">Minimal API</text>
+
+  <rect x="460" y="25" width="200" height="60" class="box a"/>
+  <text x="470" y="50" class="b">AuthN: JwtBearer</text>
+  <text x="470" y="70" class="cap">→ ClaimsPrincipal</text>
+
+  <rect x="460" y="105" width="200" height="60" class="box z"/>
+  <text x="470" y="130" class="b">AuthZ: Policy</text>
+
+  <rect x="700" y="25" width="180" height="60" class="box r"/>
+  <text x="710" y="50" class="b">401/403</text>
+
+  <rect x="700" y="105" width="180" height="60" class="box"/>
+  <text x="710" y="130" class="b">2xx (201/204/...)</text>
+
+  <line x1="200" y1="70" x2="240" y2="70" class="arrow"/>
+  <line x1="420" y1="70" x2="460" y2="55" class="arrow"/>
+  <line x1="420" y1="70" x2="460" y2="135" class="arrow"/>
+  <line x1="660" y1="55" x2="700" y2="55" class="arrow"/>
+  <line x1="660" y1="135" x2="700" y2="135" class="arrow"/>
+</svg>
