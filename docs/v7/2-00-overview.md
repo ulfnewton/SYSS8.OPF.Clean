@@ -1,6 +1,6 @@
 # Översikt & mål – Från Databas till Token
 
-[◀ Till index](./02-index.md) | [Nästa: Seeding ▶](./02-10-identity-seeding.md)
+[◀ Till index](./2-index.md) | [Nästa: Seeding ▶](./2-10-identity-seeding.md)
 
 ---
 
@@ -16,4 +16,4 @@ I förra delen satte vi upp vakten (Middleware). I denna del skapar vi **passerk
 
 ---
 
-[◀ Till index](./02-index.md) | [Nästa: Seeding ▶](./02-10-identity-seeding.md)
+[◀ Till index](./2-index.md) | [Nästa: Seeding ▶](./2-10-identity-seeding.md)

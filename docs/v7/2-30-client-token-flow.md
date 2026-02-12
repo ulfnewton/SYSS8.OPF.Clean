@@ -1,6 +1,6 @@
 # Klientens tokenflöde – Automatisering
 
-[◀ Inloggning & token](./02-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./02-40-verification.md)
+[◀ Inloggning & token](./2-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./2-40-verification.md)
 
 ---
 
@@ -22,4 +22,4 @@ Klienten måste vara förberedd på att servern säger nej:
 
 ---
 
-[◀ Inloggning & token](./02-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./02-40-verification.md)
+[◀ Inloggning & token](./2-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./2-40-verification.md)
