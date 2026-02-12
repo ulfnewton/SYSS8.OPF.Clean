@@ -1,20 +1,29 @@
 @page "/library"
-@namespace SYSS8.OPF.Clean.WebUi.Components.Pages
 @using SYSS8.OPF.Clean.WebApi.Contracts
 @inject ApiClient Api
 @inject AuthState Auth
 @inject IUiStatus UI
+@using SYSS8.OPF.Clean.WebUi.Components.Shared
 
 <h3>Authors</h3>
 
 @if (!Auth.IsAuthenticated)
 {
-        <p>Inte inloggad. <a href="/">Logga in</a>.</p>
+    <p>Inte inloggad. <a href="/">Logga in</a>.</p>
 }
 else
 {
     <p>Inloggad som <b>@Auth.PreferredNamed</b> (@Auth.Role)</p>
+
     <button @onclick="Load">Ladda lista</button>
+
+    <RoleGate Roles="@(new[] { "Lärare", "Admin" })">
+        <div class="mt-3">
+            <h4>Skapa author (endast Lärare/Admin)</h4>
+            <input @bind="_create.Name" placeholder="Namn" />
+            <button @onclick="Create" disabled="@string.IsNullOrWhiteSpace(_create.Name)">Skapa</button>
+        </div>
+    </RoleGate>
 
     @if (_authors is null)
     {
@@ -27,16 +36,16 @@ else
     else
     {
         <ul>
-            @foreach(var author in _authors)
+            @foreach (var author in _authors)
             {
-                
+                <li>@author.Name</li>
             }
         </ul>
     }
 }
 
 @code {
-    List<AuthorDTO> _authors = [];
+    List<AuthorDTO>? _authors = null;
     CreateAuthorDTO _create = new();
 
     async Task Load()
@@ -45,6 +54,10 @@ else
         {
             UI.Busy(true);
             _authors = await Api.GetAuthorAsync();
+        }
+        catch (ApiProblemException ex)
+        {
+            UI.SetError(new UiError("Fel vid hämtning", ex.Message));
         }
         finally
         {
@@ -61,7 +74,15 @@ else
             _create = new();
             await Load();
         }
-        catch(ApiProblemException ex)
+        catch (ApiProblemException ex) when (ex.Status == 401)
+        {
+            UI.SetError(new UiError("Ej inloggad", "Logga in för att skapa author."));
+        }
+        catch (ApiProblemException ex) when (ex.Status == 403)
+        {
+            UI.SetError(new UiError("Behörighet saknas", "Denna åtgärd kräver Lärare eller Admin."));
+        }
+        catch (ApiProblemException ex)
         {
             UI.SetError(new UiError("Fel", ex.Message));
         }
@@ -73,6 +94,6 @@ else
 
     public class CreateAuthorDTO
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
     }
 }
