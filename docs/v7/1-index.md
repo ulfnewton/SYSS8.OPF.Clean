@@ -1,4 +1,4 @@
-# Teori v7 – CA‑1 (Identity & JWT)
+# Teori v7 – Identity & JWT
 
 Läs i ordning inför passet för att förstå hur säkerhet implementeras i Clean Architecture:
 
