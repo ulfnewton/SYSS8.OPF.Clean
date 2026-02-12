@@ -1,6 +1,6 @@
 # Resource‑based Authorization
 
-[◀ Föregående: Custom requirements](./03-20-custom-requirements.md) | [Nästa: ProblemDetails & 403‑UX ▶](./03-40-problemdetails-ux.md)
+[◀ Föregående: Custom requirements](./3-20-custom-requirements.md) | [Nästa: ProblemDetails & 403‑UX ▶](./3-40-problemdetails-ux.md)
 
 ---
 
@@ -17,4 +17,4 @@ Ibland vet vi inte om en användare får göra något förrän vi har hämtat ob
 
 ---
 
-[◀ Föregående: Custom requirements](./03-20-custom-requirements.md) | [Nästa: ProblemDetails & 403‑UX ▶](./03-40-problemdetails-ux.md)
+[◀ Föregående: Custom requirements](./3-20-custom-requirements.md) | [Nästa: ProblemDetails & 403‑UX ▶](./3-40-problemdetails-ux.md)

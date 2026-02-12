@@ -1,6 +1,6 @@
 # Verifieringsritual & felsökning
 
-[◀ Föregående: ProblemDetails & 403‑UX](./03-40-problemdetails-ux.md) | [Till index ▶](./03-index.md)
+[◀ Föregående: ProblemDetails & 403‑UX](./3-40-problemdetails-ux.md) | [Till index ▶](./3-index.md)
 
 ---
 
@@ -12,4 +12,4 @@
 
 ---
 
-[◀ Föregående: ProblemDetails & 403‑UX](./03-40-problemdetails-ux.md) | [Till index ▶](./03-index.md)
+[◀ Föregående: ProblemDetails & 403‑UX](./3-40-problemdetails-ux.md) | [Till index ▶](./3-index.md)

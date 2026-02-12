@@ -41,12 +41,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Identity & Jwt", "1. Ide
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Från Databas till Token", "2. Från Databas till Token", "{D86310B4-2E04-41A9-8C84-24C37124908C}"
 	ProjectSection(SolutionItems) = preProject
-		docs\v7\2-40-verification.md = docs\v7\2-40-verification.md
 		docs\v7\2-00-overview.md = docs\v7\2-00-overview.md
 		docs\v7\2-10-identity-seeding.md = docs\v7\2-10-identity-seeding.md
 		docs\v7\2-20-login-and-token.md = docs\v7\2-20-login-and-token.md
 		docs\v7\2-30-client-token-flow.md = docs\v7\2-30-client-token-flow.md
+		docs\v7\2-40-verification.md = docs\v7\2-40-verification.md
 		docs\v7\2-index.md = docs\v7\2-index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Auktorisering på djupet", "3. Auktorisering på djupet", "{6F0DFF44-25F6-442B-A2B2-3E575F935430}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\3-00-overview.md = docs\v7\3-00-overview.md
+		docs\v7\3-10-policy-design.md = docs\v7\3-10-policy-design.md
+		docs\v7\3-20-custom-requirements.md = docs\v7\3-20-custom-requirements.md
+		docs\v7\3-30-resource-authorization.md = docs\v7\3-30-resource-authorization.md
+		docs\v7\3-40-problemdetails-ux.md = docs\v7\3-40-problemdetails-ux.md
+		docs\v7\3-50-verification.md = docs\v7\3-50-verification.md
+		docs\v7\3-index.md = docs\v7\3-index.md
 	EndProjectSection
 EndProject
 Global
@@ -88,6 +99,7 @@ Global
 		{BB63DC20-34BF-404D-A3AF-5B45235080D8} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
 		{C29D5ECB-BD41-45E5-8964-D9877AA4C0E0} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 		{D86310B4-2E04-41A9-8C84-24C37124908C} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
+		{6F0DFF44-25F6-442B-A2B2-3E575F935430} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}

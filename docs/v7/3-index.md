@@ -1,4 +1,8 @@
-# Teori v7 – 03 (Auktorisering på djupet)
+# Teori v7 – Auktorisering på djupet
+
+[◀ Till kursens index](../index.md)
+
+---
 
 Läs i ordning för att kunna designa policies, skriva egna krav/handlers och fatta beslut per resurs:
 

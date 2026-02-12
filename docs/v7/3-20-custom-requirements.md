@@ -1,6 +1,6 @@
 # Custom Requirements & Handlers
 
-[◀ Föregående: Policy‑design](./03-10-policy-design.md) | [Nästa: Resource‑based ▶](./03-30-resource-authorization.md)
+[◀ Föregående: Policy‑design](./3-10-policy-design.md) | [Nästa: Resource‑based ▶](./3-30-resource-authorization.md)
 
 ---
 
@@ -19,4 +19,4 @@ I din Handler anropar du `context.Succeed(requirement)` för att släppa igenom 
 
 ---
 
-[◀ Föregående: Policy‑design](./03-10-policy-design.md) | [Nästa: Resource‑based ▶](./03-30-resource-authorization.md)
+[◀ Föregående: Policy‑design](./3-10-policy-design.md) | [Nästa: Resource‑based ▶](./3-30-resource-authorization.md)

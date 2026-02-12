@@ -1,6 +1,6 @@
 # ProblemDetails & 403‑UX
 
-[◀ Föregående: Resource‑based](./03-30-resource-authorization.md) | [Nästa: Verifieringsritual ▶](./03-50-verification.md)
+[◀ Föregående: Resource‑based](./3-30-resource-authorization.md) | [Nästa: Verifieringsritual ▶](./3-50-verification.md)
 
 ---
 
@@ -15,4 +15,4 @@ Det är ett standardiserat sätt (RFC 7807) för ett API att skicka felmeddeland
 
 ---
 
-[◀ Föregående: Resource‑based](./03-30-resource-authorization.md) | [Nästa: Verifieringsritual ▶](./03-50-verification.md)
+[◀ Föregående: Resource‑based](./3-30-resource-authorization.md) | [Nästa: Verifieringsritual ▶](./3-50-verification.md)

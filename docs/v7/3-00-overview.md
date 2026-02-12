@@ -1,6 +1,6 @@
 # 001 Översikt & mål – Auktorisering på djupet
 
-[◀ Till index](./03-index.md) | [Nästa: Policy‑design ▶](./03-10-policy-design.md)
+[◀ Till index](./3-index.md) | [Nästa: Policy‑design ▶](./3-10-policy-design.md)
 
 ---
 
@@ -17,4 +17,4 @@ Verkliga applikationer är sällan svartvita. Genom att bemästra Handlers och R
 
 ---
 
-[◀ Till index](./03-index.md) | [Nästa: Policy‑design ▶](./03-10-policy-design.md)
+[◀ Till index](./3-index.md) | [Nästa: Policy‑design ▶](./3-10-policy-design.md)

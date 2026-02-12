@@ -1,6 +1,6 @@
 # Policy‑design: Roller vs Claims
 
-[◀ Föregående: Översikt](./03-00-overview.md) | [Nästa: Custom requirements ▶](./03-20-custom-requirements.md)
+[◀ Föregående: Översikt](./3-00-overview.md) | [Nästa: Custom requirements ▶](./3-20-custom-requirements.md)
 
 ---
 
@@ -21,4 +21,4 @@ Istället för att strössla `[Authorize(Roles = "Admin")]` överallt, bygger vi
 
 ---
 
-[◀ Föregående: Översikt](./03-00-overview.md) | [Nästa: Custom requirements ▶](./03-20-custom-requirements.md)
+[◀ Föregående: Översikt](./3-00-overview.md) | [Nästa: Custom requirements ▶](./3-20-custom-requirements.md)
