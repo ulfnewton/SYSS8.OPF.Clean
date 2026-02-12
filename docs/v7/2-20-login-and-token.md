@@ -2,6 +2,8 @@
 
 [◀ Seeding](./02-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./02-30-client-token-flow.md)
 
+---
+
 ## Vad händer vid en inloggning?
 Inloggningen är den enda gången vi faktiskt använder lösenordet. Därefter glömmer vi det och använder bara vår JWT.
 
@@ -18,4 +20,5 @@ När du packar upp din token (t.ex. på [jwt.io](https://jwt.io)) ser du:
 ![login-seq](assets/login-sequence.svg)
 
 ---
+
 [◀ Seeding](./02-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./02-30-client-token-flow.md)

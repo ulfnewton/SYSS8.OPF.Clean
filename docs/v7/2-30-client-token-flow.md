@@ -2,6 +2,8 @@
 
 [◀ Inloggning & token](./02-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./02-40-verification.md)
 
+---
+
 I Blazor vill vi inte manuellt behöva skicka med vår token vid varje enskilt API-anrop. Det är ineffektivt och leder till buggar.
 
 ## Lösningen: DelegatingHandler
@@ -19,4 +21,5 @@ Klienten måste vara förberedd på att servern säger nej:
 ![client-token-flow](assets/client-token-flow.svg)
 
 ---
+
 [◀ Inloggning & token](./02-20-login-and-token.md) | [Nästa: Verifieringsritual ▶](./02-40-verification.md)
