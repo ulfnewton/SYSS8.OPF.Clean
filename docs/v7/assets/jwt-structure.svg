@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="170" aria-label="JWT-struktur">
+  <style>
+    .b{font:16px sans-serif; fill:#111}
+    .box{stroke:#555; fill:#f7f7f7}
+    .h{fill:#e6f2ff}
+    .p{fill:#eaffea}
+    .s{fill:#ffeaea}
+    .cap{font:13px sans-serif; fill:#444}
+  </style>
+  <rect x="20" y="30" width="280" height="80" class="box h"/>
+  <rect x="330" y="30" width="280" height="80" class="box p"/>
+  <rect x="640" y="30" width="340" height="110" class="box s"/>
+  <text x="40" y="55" class="b">Header</text>
+  <text x="40" y="80" class="cap">alg: HS256, typ: JWT</text>
+  <text x="350" y="55" class="b">Payload (claims)</text>
+  <text x="350" y="80" class="cap">sub, email, role, exp...</text>
+  <text x="660" y="55" class="b">Signature</text>
+  <text x="660" y="82" class="cap">HMACSHA256(</text>
+  <text x="660" y="102" class="cap"> base64url(header) + "." + base64url(payload),</text>
+  <text x="660" y="122" class="cap"> secret )</text>
+</svg>
