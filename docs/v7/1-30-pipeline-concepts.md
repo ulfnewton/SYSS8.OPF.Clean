@@ -1,6 +1,6 @@
 # Auth‑pipeline – Från HTTP till beslut
 
-[◀ Föregående: Boardingkortet](./ca-1-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](./ca-1-40-policies-and-ui.md)
+[◀ Föregående: Boardingkortet](./1-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](./1-40-policies-and-ui.md)
 
 I ASP.NET Core hanteras säkerhet som ett löpande band (Middleware). Ordningen är kritisk.
 
@@ -13,4 +13,4 @@ I ASP.NET Core hanteras säkerhet som ett löpande band (Middleware). Ordningen 
 4.  **Endpoint anropas:** Om båda ovan godkänts körs din kod.
 
 ---
-[◀ Föregående: Boardingkortet](./ca-1-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](./ca-1-40-policies-and-ui.md)
+[◀ Föregående: Boardingkortet](.-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](.-40-policies-and-ui.md)

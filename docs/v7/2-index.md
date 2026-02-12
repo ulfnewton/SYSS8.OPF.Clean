@@ -1,4 +1,4 @@
-# Teori v7 – 02 (Seeding, Login & Tokenflöde)
+# Teori v7 – Seeding, Login & Tokenflöde
 
 Läs i ordning inför passet för att sätta identitet, inloggning och klientens tokenflöde på plats:
 

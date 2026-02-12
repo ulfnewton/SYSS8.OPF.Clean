@@ -1,6 +1,6 @@
 # Analogin: Boardingkortet
 
-[◀ Föregående: JWT-Basics](./ca-1-20-jwt-basics.md) | [Nästa: Auth-pipeline ▶](./ca-1-30-pipeline-concepts.md)
+[◀ Föregående: JWT-Basics](./1-20-jwt-basics.md) | [Nästa: Auth-pipeline ▶](./1-30-pipeline-concepts.md)
 
 För att förstå varför JWT är så kraftfullt, jämför det med ett boardingkort på en flygplats.
 
@@ -10,4 +10,4 @@ För att förstå varför JWT är så kraftfullt, jämför det med ett boardingk
 4.  **Stateless:** Flygbolaget behöver inte komma ihåg ditt ansikte, de behöver bara lita på att biljetten de själva stämplat är äkta.
 
 ---
-[◀ Föregående: JWT-Basics](./ca-1-20-jwt-basics.md) | [Nästa: Auth-pipeline ▶](./ca-1-30-pipeline-concepts.md)
+[◀ Föregående: JWT-Basics](./1-20-jwt-basics.md) | [Nästa: Auth-pipeline ▶](./1-30-pipeline-concepts.md)
