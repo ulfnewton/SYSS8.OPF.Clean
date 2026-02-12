@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SYSS8.OPF.Clean.Infrastructure;
 using SYSS8.OPF.Clean.WebApi.Auth;
 using SYSS8.OPF.Clean.WebApi.Endpoints;
+using SYSS8.OPF.Clean.WebApi.Identity;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,4 +73,6 @@ app.UseCors("DevCors");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapEndpoints();
+app.MapAuth();
+await IdentitySeeder.SeedAsync(app.Services);
 app.Run();

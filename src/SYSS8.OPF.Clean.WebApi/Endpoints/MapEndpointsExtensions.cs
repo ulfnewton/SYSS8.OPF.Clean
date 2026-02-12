@@ -1,4 +1,3 @@
-
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
 public static class MapEndpointsExtensions
@@ -16,6 +15,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanCreateAuthor")
             .WithName(nameof(AuthorEndpoints.CreateAuthor))
             .WithDescription("Creates an author.");
 
@@ -51,6 +51,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanCreateAuthor")
             .WithName(nameof(AuthorEndpoints.CreateBook))
             .WithDescription("Creates a book from the given author.");
     }
@@ -62,7 +63,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithName(nameof(AuthorEndpoints.GetBooks))
-            .WithDescription("Gets all books. Optionally filter by author using the authorId query parameter.");
+            .WithDescription("Gets all books.");
 
         app.MapGet("/books/{bookId:guid}", AuthorEndpoints.GetBook)
             .Produces(StatusCodes.Status200OK)
@@ -76,6 +77,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanDeleteBook")
             .WithName(nameof(AuthorEndpoints.UpdateBook))
             .WithDescription("Updates a book by id.");
 
@@ -83,6 +85,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization("CanDeleteBook")
             .WithName(nameof(AuthorEndpoints.DeleteBook))
             .WithDescription("Deletes a book by id.");
     }
