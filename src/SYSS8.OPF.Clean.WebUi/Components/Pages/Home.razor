@@ -1,38 +1,56 @@
 @page "/"
-@inject AuthState Auth 
-@inject NavigationManager Navigation
+@inject ApiClient Api
+@inject ITokenStore Tokens
+@inject AuthState Auth
+@inject NavigationManager Nav
+@inject IUiStatus UI
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Logga in</PageTitle>
+<h1>Logga in</h1>
 
-<h1>Oautentiserad vy - logga in nedan</h1>
-
-<EditForm Model="input" OnValidSubmit="Login" FormName="login">
-    <label>Roll</label>
-    <InputSelect @bind-Value="input.Role">
-        <option value="Student">Student</option>
-        <option value="Lärare">Lärare</option>
-        <option value="Admin">Admin</option>
-    </InputSelect>
+<EditForm Model="_input" OnValidSubmit="Login">
     <div class="mb-2">
-        <label>Namn</label>
-        <InputText @bind-Value="input.Name" />
+        <label>E‑post</label>
+        <InputText @bind-Value="_input.Email" />
+    </div>
+    <div class="mb-2">
+        <label>Lösenord</label>
+        <InputText @bind-Value="_input.Password" type="password" />
     </div>
     <button>Logga in</button>
 </EditForm>
 
-@code {
-    Input input = new();
+<p class="mt-3">
+    <em>Demo‑konton:</em> <code>admin@example.com</code>, <code>teacher@example.com</code>,
+    <code>student@example.com</code> (lösen: <code>Password1!</code>)
+</p>
 
-    void Login()
+@code {
+    Input _input = new() { Email = "teacher@example.com", Password = "Password1!" };
+
+    async Task Login()
     {
-        Auth.SignIn(input.Role, input.Name);
-        Navigation.NavigateTo("/library");
+        try
+        {
+            UI.Busy(true);
+            var res = await Api.LoginAsync(_input.Email, _input.Password);
+            Tokens.SetToken(res.Token);
+            Auth.SignIn(res.Role, res.Email);
+            Nav.NavigateTo("/library", forceLoad: false);
+        }
+        catch (ApiProblemException ex)
+        {
+            UI.SetError(new UiError("Inloggning misslyckades", ex.Message));
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
     }
 
-    // [Inject] AuthState State { get; set; }
     public class Input
     {
-        public string Role { get; set; } = "Student";
-        public string Name { get; set; } = "NoName";
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
     }
 }

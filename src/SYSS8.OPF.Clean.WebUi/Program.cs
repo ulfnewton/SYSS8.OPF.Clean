@@ -1,32 +1,27 @@
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.SetMinimumLevel(LogLevel.Debug);
 builder.Logging.AddConsole();
-
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Register global UI status service (one source of truth)
 builder.Services.AddScoped<IUiStatus, UiStatus>();
+builder.Services.AddSingleton<ITokenStore, TokenStore>();
+builder.Services.AddTransient<JwtMessageHandler>();
 
 builder.Services.AddHttpClient("WebApi", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:5001"); // matchar WebApi
-});
+    c.BaseAddress = new Uri("https://localhost:5001");
+})
+.AddHttpMessageHandler<JwtMessageHandler>();
+
 builder.Services
     .AddScoped<ApiClient>()
     .AddScoped<AuthState>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
 }
 
 app.UseStaticFiles();
