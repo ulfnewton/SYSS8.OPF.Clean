@@ -1,6 +1,6 @@
 # Inloggning & tokenutfärdande
 
-[◀ Seeding](./02-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./02-30-client-token-flow.md)
+[◀ Seeding](./2-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./2-30-client-token-flow.md)
 
 ---
 
@@ -21,4 +21,4 @@ När du packar upp din token (t.ex. på [jwt.io](https://jwt.io)) ser du:
 
 ---
 
-[◀ Seeding](./02-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./02-30-client-token-flow.md)
+[◀ Seeding](./2-10-identity-seeding.md) | [Nästa: Klientens tokenflöde ▶](./2-30-client-token-flow.md)

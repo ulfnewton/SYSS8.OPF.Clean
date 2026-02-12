@@ -1,6 +1,6 @@
 # Seeding av roller & användare
 
-[◀ Översikt](./02-00-overview.md) | [Nästa: Inloggning & token ▶](./02-20-login-and-token.md)
+[◀ Översikt](./2-00-overview.md) | [Nästa: Inloggning & token ▶](./2-20-login-and-token.md)
 
 ---
 
@@ -20,4 +20,4 @@ Utan seeding startar din applikation helt tom. Genom att koda in seeding sparar 
 
 ---
 
-[◀ Översikt](./02-00-overview.md) | [Nästa: Inloggning & token ▶](./02-20-login-and-token.md)
+[◀ Översikt](./2-00-overview.md) | [Nästa: Inloggning & token ▶](./2-20-login-and-token.md)

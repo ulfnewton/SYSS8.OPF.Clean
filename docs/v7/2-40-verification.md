@@ -1,6 +1,6 @@
 # Verifieringsritual & felsökning
 
-[◀ Föregående: Klientens tokenflöde](./02-30-client-token-flow.md) | [Till index ▶](./02-index.md)
+[◀ Föregående: Klientens tokenflöde](./2-30-client-token-flow.md) | [Till index ▶](./2-index.md)
 
 ---
 
@@ -19,4 +19,4 @@ Innan vi går vidare till nästa stora modul måste vi veta att fundamentet hål
 
 ---
 
-[◀ Föregående: Klientens tokenflöde](./02-30-client-token-flow.md) | [Till index ▶](./02-index.md)
+[◀ Föregående: Klientens tokenflöde](./2-30-client-token-flow.md) | [Till index ▶](./2-index.md)
