@@ -4,7 +4,7 @@
 
 I ASP.NET Core hanteras säkerhet som ett löpande band (Middleware). Ordningen är kritisk.
 
-
+![auth-flow](assets/auth-flow.svg)
 
 ## Flödet i Program.cs
 1.  **Request kommer in.**
