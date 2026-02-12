@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="220" aria-label="Resource based authorization">
+  <style>
+    .b{font:15px sans-serif; fill:#111}
+    .box{stroke:#555; fill:#f7f7f7}
+    .u{fill:#eef7ff}
+    .arrow{stroke:#666; stroke-width:2; marker-end:url(#m)}
+  </style>
+  <defs>
+    <marker id="m" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <rect x="40" y="40" width="260" height="60" class="box"/>
+  <text x="50" y="70" class="b">Användare (ClaimsPrincipal)</text>
+  <rect x="340" y="40" width="260" height="60" class="box u"/>
+  <text x="350" y="70" class="b">Resurs (t.ex. Book)</text>
+  <rect x="640" y="40" width="280" height="60" class="box"/>
+  <text x="650" y="70" class="b">Handler avgör: ägare? behörig?</text>
+  <line x1="300" y1="70" x2="340" y2="70" class="arrow"/>
+  <line x1="600" y1="70" x2="640" y2="70" class="arrow"/>
+</svg>

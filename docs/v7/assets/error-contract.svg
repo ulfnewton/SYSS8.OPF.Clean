@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="240" aria-label="ProblemDetails & UX">
+  <style>
+    .b{font:15px sans-serif; fill:#111}
+    .box{stroke:#555; fill:#f7f7f7}
+    .r{fill:#ffeaea}
+    .y{fill:#fff7e6}
+    .g{fill:#eaffea}
+  </style>
+  <rect x="40" y="30" width="260" height="60" class="box r"/>
+  <text x="50" y="65" class="b">401 Unauthorized</text>
+  <rect x="340" y="30" width="260" height="60" class="box y"/>
+  <text x="350" y="65" class="b">403 Forbidden</text>
+  <rect x="640" y="30" width="260" height="60" class="box g"/>
+  <text x="650" y="65" class="b">2xx</text>
+  <text x="50" y="110" class="b">UI: visa login‑baner / redirect</text>
+  <text x="350" y="110" class="b">UI: disable/dölj + felpanel</text>
+  <text x="650" y="110" class="b">UI: visa resultat</text>
+</svg>
