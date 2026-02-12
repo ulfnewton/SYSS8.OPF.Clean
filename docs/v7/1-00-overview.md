@@ -1,4 +1,4 @@
-# CA‑1: Översikt & lärandemål
+# Översikt & mål – Identity & Jwt
 
 [◀ Till index](./index.md) | [Nästa: AuthN vs AuthZ ▶](./1-10-authn-authz-basics.md)
 
