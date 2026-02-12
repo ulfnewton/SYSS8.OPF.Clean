@@ -2,6 +2,8 @@
 
 [◀ Föregående: Klientens tokenflöde](./02-30-client-token-flow.md) | [Till index ▶](./02-index.md)
 
+---
+
 Innan vi går vidare till nästa stora modul måste vi veta att fundamentet håller. Kör denna ritual systematiskt.
 
 ## Teststeg
@@ -16,4 +18,5 @@ Innan vi går vidare till nästa stora modul måste vi veta att fundamentet hål
 - **Token syns inte?** Kolla i webbläsarens *Network*-tab. Finns `Authorization`-headern med i anropet?
 
 ---
+
 [◀ Föregående: Klientens tokenflöde](./02-30-client-token-flow.md) | [Till index ▶](./02-index.md)

@@ -1,3 +1,4 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.3.11429.125
@@ -25,15 +26,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{5D7ACC49-7
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v7", "v7", "{BB63DC20-34BF-404D-A3AF-5B45235080D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Identity & Jwt", "1. Identity & Jwt", "{C29D5ECB-BD41-45E5-8964-D9877AA4C0E0}"
 	ProjectSection(SolutionItems) = preProject
+		docs\v7\1-00-overview.md = docs\v7\1-00-overview.md
+		docs\v7\1-10-authn-authz-basics.md = docs\v7\1-10-authn-authz-basics.md
+		docs\v7\1-20-jwt-basics.md = docs\v7\1-20-jwt-basics.md
+		docs\v7\1-25-the-boarding-pass.md = docs\v7\1-25-the-boarding-pass.md
+		docs\v7\1-30-pipeline-concepts.md = docs\v7\1-30-pipeline-concepts.md
+		docs\v7\1-40-policies-and-ui.md = docs\v7\1-40-policies-and-ui.md
+		docs\v7\1-50-verification.md = docs\v7\1-50-verification.md
 		docs\v7\1-index.md = docs\v7\1-index.md
-		docs\v7\ca-1-00-overview.md = docs\v7\ca-1-00-overview.md
-		docs\v7\ca-1-10-authn-authz-basics.md = docs\v7\ca-1-10-authn-authz-basics.md
-		docs\v7\ca-1-20-jwt-basics.md = docs\v7\ca-1-20-jwt-basics.md
-		docs\v7\ca-1-25-the-boarding-pass.md = docs\v7\ca-1-25-the-boarding-pass.md
-		docs\v7\ca-1-30-pipeline-concepts.md = docs\v7\ca-1-30-pipeline-concepts.md
-		docs\v7\ca-1-40-policies-and-ui.md = docs\v7\ca-1-40-policies-and-ui.md
-		docs\v7\ca-1-50-verification.md = docs\v7\ca-1-50-verification.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Från Databas till Token", "2. Från Databas till Token", "{D86310B4-2E04-41A9-8C84-24C37124908C}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\2-40-verification.md = docs\v7\2-40-verification.md
+		docs\v7\2-00-overview.md = docs\v7\2-00-overview.md
+		docs\v7\2-10-identity-seeding.md = docs\v7\2-10-identity-seeding.md
+		docs\v7\2-20-login-and-token.md = docs\v7\2-20-login-and-token.md
+		docs\v7\2-30-client-token-flow.md = docs\v7\2-30-client-token-flow.md
+		docs\v7\2-index.md = docs\v7\2-index.md
 	EndProjectSection
 EndProject
 Global
@@ -73,6 +86,8 @@ Global
 		{5741CDAD-A4F7-4724-8A25-6AE81474EECB} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{A732E8DD-3305-43B2-9148-E67C58ECB511} = {D74B9802-6D88-4F4B-A3D2-1F0A25DD6ECC}
 		{BB63DC20-34BF-404D-A3AF-5B45235080D8} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
+		{C29D5ECB-BD41-45E5-8964-D9877AA4C0E0} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
+		{D86310B4-2E04-41A9-8C84-24C37124908C} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}
