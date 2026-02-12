@@ -1,6 +1,6 @@
 # Verifieringsritual & Felsökning
 
-[◀ Föregående: Policies & UI](./ca-1-40-policies-and-ui.md) | [Till index ▶](./index.md)
+[◀ Föregående: Policies & UI](./1-40-policies-and-ui.md) | [Till index ▶](./index.md)
 
 När du är klar med Del 1, kör denna ritual för att säkerställa att allt fungerar:
 
@@ -14,4 +14,4 @@ När du är klar med Del 1, kör denna ritual för att säkerställa att allt fu
 - [ ] **Hänglåset i Swagger:** Har du konfigurerat Swagger så att den faktiskt skickar med din token?
 
 ---
-[◀ Föregående: Policies & UI](./ca-1-40-policies-and-ui.md) | [Till index ▶](./index.md)
+[◀ Föregående: Policies & UI](./1-40-policies-and-ui.md) | [Till index ▶](./index.md)

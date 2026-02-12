@@ -1,6 +1,6 @@
 # AuthN vs AuthZ – 401 kontra 403
 
-[◀ Föregående: Översikt](./ca-1-00-overview.md) | [Nästa: JWT-Basics ▶](./ca-1-20-jwt-basics.md)
+[◀ Föregående: Översikt](./1-00-overview.md) | [Nästa: JWT-Basics ▶](./1-20-jwt-basics.md)
 
 För att felsöka säkerhet måste man veta vilken fråga API:et misslyckas med.
 
@@ -17,4 +17,4 @@ För att felsöka säkerhet måste man veta vilken fråga API:et misslyckas med.
 * *Tänk:* "Du är inne i byggnaden, men dörren till arkivet är låst."
 
 ---
-[◀ Föregående: Översikt](./ca-1-00-overview.md) | [Nästa: JWT-Basics ▶](./ca-1-20-jwt-basics.md)
+[◀ Föregående: Översikt](./1-00-overview.md) | [Nästa: JWT-Basics ▶](./1-20-jwt-basics.md)
