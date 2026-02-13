@@ -13,6 +13,7 @@ namespace SYSS8.OPF.Clean.Infrastructure
         public DbSet<Author> Authors => Set<Author>();
         public DbSet<Book> Books => Set<Book>();
     }
+
     public class User : IdentityUser<Guid> { }
     public class Role : IdentityRole<Guid> { }
 }

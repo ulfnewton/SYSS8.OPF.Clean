@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SYSS8.OPF.Clean.Infrastructure;
+using SYSS8.OPF.Clean.Infrastructure.Identity;
 using SYSS8.OPF.Clean.WebApi.Auth;
 using SYSS8.OPF.Clean.WebApi.Endpoints;
 using System.Text;
@@ -70,6 +71,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 var app = builder.Build();
+
+await IdentitySeeder.SeedAsync(app.Services, CancellationToken.None);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

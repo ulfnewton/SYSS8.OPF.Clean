@@ -1,0 +1,16 @@
+@inject SYSS8.OPF.Clean.WebUi.Services.AuthState Auth
+@namespace SYSS8.OPF.Clean.WebUi.Components.Shared
+
+@if (IsAllowed)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public IEnumerable<string> Roles { get; set; } = Array.Empty<string>();
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool IsAllowed =>
+        Auth.IsAuthenticated &&
+        Roles?.Contains(Auth.Role ?? "", StringComparer.OrdinalIgnoreCase) == true;
+}

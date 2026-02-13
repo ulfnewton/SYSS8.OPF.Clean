@@ -7,15 +7,20 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Register global UI status service (one source of truth)
-builder.Services.AddScoped<IUiStatus, UiStatus>();
+builder.Services
+    .AddScoped<IUiStatus, UiStatus>()
+    .AddScoped<JwtMessageHandler>();
 
 builder.Services.AddHttpClient("WebApi", c =>
 {
     c.BaseAddress = new Uri("https://localhost:5001"); // matchar WebApi
-});
+})
+.AddHttpMessageHandler<JwtMessageHandler>();
+
 builder.Services
     .AddScoped<ApiClient>()
-    .AddScoped<AuthState>();
+    .AddScoped<AuthState>()
+    .AddScoped<ITokenStore, TokenStore>();
 
 var app = builder.Build();
 

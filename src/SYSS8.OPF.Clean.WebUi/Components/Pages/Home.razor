@@ -1,6 +1,9 @@
 @page "/"
 @inject AuthState Auth 
 @inject NavigationManager Navigation
+@inject IUiStatus UI
+@inject ApiClient Api
+@inject ITokenStore Tokens
 
 <PageTitle>Home</PageTitle>
 
@@ -17,22 +20,47 @@
         <label>Namn</label>
         <InputText @bind-Value="input.Name" />
     </div>
+    <div class="mb-2">
+        <label>Lösenord</label>
+        <InputText @bind-Value="input.Password" type="password" />
+    </div>
     <button>Logga in</button>
 </EditForm>
+
+<p class="mt-3">
+    <em>Demo-konton:</em> <code>admin@example.com</code>, <code>teacher@example.com</code>, 
+    <code>student@example.com</code> (lösen: <code>Pass123!</code>)
+</p>
 
 @code {
     Input input = new();
 
-    void Login()
+    async Task Login()
     {
-        Auth.SignIn(input.Role, input.Name);
-        Navigation.NavigateTo("/library");
+        UI.Busy(true);
+
+        try
+        {
+            var res = await Api.LoginAsync(input.Name, input.Password);
+            Tokens.SetToken(res.Token);
+            Auth.SignIn(input.Role, input.Name);
+            Navigation.NavigateTo("/library");
+        }
+        catch(ApiProblemException ex)
+        {
+            UI.SetError(new UiError("Inloggningen misslyckades", ex.Message));
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
     }
 
     // [Inject] AuthState State { get; set; }
     public class Input
     {
-        public string Role { get; set; } = "Student";
-        public string Name { get; set; } = "NoName";
+        public string Role { get; set; } = "Lärare";
+        public string Name { get; set; } = "teacher@example.com";
+        public string Password { get; set; } = "Pass123!";
     }
 }

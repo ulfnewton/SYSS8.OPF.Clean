@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,6 @@ using SYSS8.OPF.Clean.Infrastructure;
 using SYSS8.OPF.Clean.WebApi.Contracts;
 
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
-
 public static class AuthorEndpoints
 {
     public static async Task<Results<Created<Author>, ProblemHttpResult>> CreateAuthor(AuthorDTO dto, AuthorDbContext context)

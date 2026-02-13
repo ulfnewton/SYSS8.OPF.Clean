@@ -11,6 +11,23 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public ApiClient(IHttpClientFactory httpClientFactory) 
             => _httpClientFactory = httpClientFactory;
 
+        public record LoginResponse(string Token, string Email, string Role);
+
+        public async Task<LoginResponse> LoginAsync(string email, string password)
+        {
+            var response = await Client.PostAsJsonAsync("/auth/login", new { email, password });
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                throw new ApiProblemException("Inte inloggad eller fel uppgifter")
+                {
+                    Status = StatusCodes.Status401Unauthorized
+                };
+            }
+
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<LoginResponse>())!;
+        }
+
         public async Task<List<AuthorDTO>> GetAuthorAsync()
         {
             var response = await Client.GetAsync("/authors");
@@ -84,6 +101,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
 
     public class ApiProblemException : Exception
     {
+        public int Status { get; set; }
         public ApiProblemException(string?  message)  : base(message) { }
     }
 }

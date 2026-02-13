@@ -5,6 +5,7 @@ public static class MapEndpointsExtensions
 {
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
     {
+        app.MapAuthEndpoints();
         MapAuthorEndpoints(app);
         MapBookEndpoints(app);
         return app;
@@ -16,6 +17,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanCreateAuthor")        // Add Authorization
             .WithName(nameof(AuthorEndpoints.CreateAuthor))
             .WithDescription("Creates an author.");
 
@@ -36,6 +38,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanUpdateAuthor")          // Add Authorization
             .WithName(nameof(AuthorEndpoints.UpdateAuthor))
             .WithDescription("Updates an author.");
 
@@ -43,6 +46,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization("CanDeleteAuthor")            // Add Authorization
             .WithName(nameof(AuthorEndpoints.DeleteAuthor))
             .WithDescription("Deletes an author.");
 
@@ -51,6 +55,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanCreateBook")              // Add Authorization
             .WithName(nameof(AuthorEndpoints.CreateBook))
             .WithDescription("Creates a book from the given author.");
     }
