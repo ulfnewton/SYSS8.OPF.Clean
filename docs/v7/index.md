@@ -1,12 +1,42 @@
-# Teori v7 – CA‑1 (code‑along 1)
+# **Code‑along: Från noll till komplett Identity‑pipeline**
 
-Läs i ordning inför passet:
+[Nästa: Verifikations ritual ▶](./index-2.md)
 
-1. [Översikt & lärandemål](ca-1-00-overview.md)
-2. [AuthN vs AuthZ – 401 kontra 403](ca-1-10-authn-authz-basics.md)
-3. [JWT – struktur, claims och signatur](ca-1-20-jwt-basics.md)
-4. [Auth‑pipeline – från HTTP till beslut](ca-1-30-pipeline-concepts.md)
-5. [Policies & UI‑beteenden (öppen GET, skyddad POST/DELETE)](ca-1-40-policies-and-ui.md)
-6. [Verifieringsritual & vanliga fel i CA‑1](ca-1-50-verification.md)
+---
 
-[◀ Till kursens index](../index.md)
+## **Syfte**
+
+Bygga hela säkerhetskedjan i praktiken:  
+**Identity → JWT → Policies → UI‑reaktioner → Verifiering**
+
+***
+
+## **Målet med passet**
+
+*   Gå från *tom databas* till *inloggning med signerad token*.
+*   Förstå hur API:t fattar beslut: **AuthN (vem?)** → **AuthZ (får du?)**
+*   Skydda POST/PUT/DELETE med **Policies** (Admin/Lärare).
+*   Låta GET vara öppet för snabb utveckling.
+*   Få Blazor att:
+    *   lagra token
+    *   skicka token automatiskt
+    *   reagera korrekt på **401/403**
+
+***
+
+## **Vad vi bygger steg för steg**
+
+1.  IdentityCore + roller + seeding
+2.   som utfärdar en JWT
+3.  Middleware‑ordning:  → 
+4.  Policies: , 
+5.  UI‑stödet: , , RoleGate
+6.  ProblemDetails för tydlig felhantering
+
+***
+
+## **Slutmålet**
+
+Kunna följa – och felsöka – hela kedjan:
+
+**UI → API → JWT‑validering → Policy‑beslut → 401/403/2xx → UI‑reaktion**
