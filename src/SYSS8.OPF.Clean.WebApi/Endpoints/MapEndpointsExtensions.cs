@@ -3,11 +3,39 @@ namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
 public static class MapEndpointsExtensions
 {
+
+    // DESIGN-VAL: Central plats för att mappa alla endpoints.
+    // FIX: Själva authentication-mappningen flyttades hit från
+    //      AuthenticationEndpoints.MapAuthEndpoints() för att samla all auth-logik 
+    //      (register/login/me) i en och samma klass.
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapAuthEndpoints();
+        // Eftersom vi har flyttat MapAuthEndppoints från AuthEndpoints.cs till den här
+        // klassen, så behöver vi inte längre anropa MapAuthEndpoints som en extension
+        // method på app.MapAuthEndpoints().
+        // FEL: app.MapAuthEndpoints();
+        MapAuthEndpoints(app);
         MapAuthorEndpoints(app);
         MapBookEndpoints(app);
+        return app;
+    }
+
+    // FIX: Flyttade från AuthEndpoints.cs, vilket gör att den inte längre är en extension method på IEndpointRouteBuilder, utan istället en vanlig statisk metod
+    // som tar IEndpointRouteBuilder som parameter. Detta är mer passande eftersom MapAuthEndpoints inte längre är en del av AuthEndpoints-klassen, och det gör det tydligare att den är en del av den övergripande endpoint-mappningen i MapEndpointsExtensions.
+    private static IEndpointRouteBuilder MapAuthEndpoints(IEndpointRouteBuilder app)
+    {
+        // DESIGN-VAL: MapGroup ger prefix + taggar och synlighet i Swagger under /auth.
+        // I det här fallet lägger vi till en tag "Auth" på gruppen, vilket kan vara användbart
+        // för dokumentation och verktyg som Swagger/OpenAPI för att kategorisera endpoints.
+        var group = app.MapGroup("/auth").WithTags("Auth");
+        group.MapPost("/register", AuthenticationEndpoints.Register);
+        group.MapPost("/login", AuthenticationEndpoints.Login);
+
+        // Design-val: Lägger till en "me" endpoint som kräver autentisering, för att demonstrera
+        // hur man kan hämta information om den inloggade användaren.
+        group.MapGet("/me", AuthenticationEndpoints.Me)
+             .RequireAuthorization();
+
         return app;
     }
 
@@ -17,7 +45,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status409Conflict)
-            .RequireAuthorization("CanCreateAuthor")        // Add Authorization
+            .RequireAuthorization("CanCreateAuthor")            // Add Authorization
             .WithName(nameof(AuthorEndpoints.CreateAuthor))
             .WithDescription("Creates an author.");
 
@@ -33,12 +61,16 @@ public static class MapEndpointsExtensions
             .WithName(nameof(AuthorEndpoints.GetAuthor))
             .WithDescription("Gets an author by id.");
 
+
+        // DESIGN-VAL: Vi återanvänder “CanCreateAuthor” även för Update i kursen (förenklar matrisen).
+        // Om du vill använda en separat policy kan du definiera den i Program.cs och
+        // sedan referera till den här. 
         app.MapPut("/authors/{id:guid}", AuthorEndpoints.UpdateAuthor)
             .Produces(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
-            .RequireAuthorization("CanUpdateAuthor")          // Add Authorization
+            .RequireAuthorization("CanCreateAuthor")            // Add Authorization
             .WithName(nameof(AuthorEndpoints.UpdateAuthor))
             .WithDescription("Updates an author.");
 
@@ -76,18 +108,27 @@ public static class MapEndpointsExtensions
             .WithName(nameof(AuthorEndpoints.GetBook))
             .WithDescription("Gets a book by id.");
 
+        // FIX: Lägger till auktorisering för att uppdatera en book, kräver att användaren
+        // har "CanCreateBook"-policyn (vilket i sin tur kräver att de har rollen "Admin"
+        // eller "Lärare") - samma som för att skapa en book, eftersom det är samma
+        // behörighetskrav.
         app.MapPut("/books/{bookId:guid}", AuthorEndpoints.UpdateBook)
             .Produces(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization("CanCreateBook")              // Add Authorization
             .WithName(nameof(AuthorEndpoints.UpdateBook))
             .WithDescription("Updates a book by id.");
 
+        // FIX: Lägger till auktorisering för att ta bort en book, kräver att användaren
+        // har "CanDeleteBook"-policyn (vilket i sin tur kräver att de har rollen "Admin")
+        // - samma som för att ta bort en author, eftersom det är samma behörighetskrav.
         app.MapDelete("/books/{bookId:guid}", AuthorEndpoints.DeleteBook)
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization("CanDeleteBook")              // Add Authorization
             .WithName(nameof(AuthorEndpoints.DeleteBook))
             .WithDescription("Deletes a book by id.");
     }
