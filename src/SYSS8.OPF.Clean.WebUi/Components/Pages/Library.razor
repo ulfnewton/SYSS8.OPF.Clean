@@ -1,5 +1,4 @@
 @page "/library"
-@namespace SYSS8.OPF.Clean.WebUi.Components.Pages
 @using SYSS8.OPF.Clean.WebApi.Contracts
 @inject ApiClient Api
 @inject AuthState Auth
@@ -10,16 +9,17 @@
 
 @if (!Auth.IsAuthenticated)
 {
-        <p>Inte inloggad. <a href="/">Logga in</a>.</p>
+    <p>Inte inloggad. <a href="/">Logga in</a>.</p>
 }
 else
 {
-    <p>Inloggad som <b>@Auth.PreferredNamed</b> (@Auth.Role)</p>
+    <p>Inloggad som <b>@Auth.PreferredName</b> (@string.Join(", ", Auth.Roles))</p>
     <button @onclick="Load">Ladda lista</button>
 
-    <RoleGate Roles="@(new[] {"Lärare", "Admin"})">
+    <!-- OBS: Endast Lärare/Admin får skapa -->
+    <RoleGate Roles="@(new[] { "Lärare", "Admin" })">
         <div class="mt-3">
-            <h4>Skapa author (endast lärare/admin)</h4>
+            <h4>Skapa author (endast Lärare/Admin)</h4>
             <input @bind="_create.Name" placeholder="Namn" />
             <button @onclick="Create" disabled="@string.IsNullOrWhiteSpace(_create.Name)">Skapa</button>
         </div>
@@ -36,7 +36,7 @@ else
     else
     {
         <ul>
-            @foreach(var author in _authors)
+            @foreach (var author in _authors)
             {
                 <li>@author.Name</li>
             }
@@ -45,7 +45,7 @@ else
 }
 
 @code {
-    List<AuthorDTO> _authors = [];
+    List<AuthorDTO>? _authors = null;
     CreateAuthorDTO _create = new();
 
     async Task Load()
@@ -53,20 +53,24 @@ else
         try
         {
             UI.Busy(true);
-            await Api.CreateAuthorAsync(_create.Name);
+
+            // FEL: Load() råkade skapa author varje gång → dubbletter och förvirring.
+            // await Api.CreateAuthorAsync(_create.Name);
+
+            // FIX: Load() ska bara ladda lista.
             _authors = await Api.GetAuthorAsync();
         }
-        catch(ApiProblemException ex) when (ex.Status == StatusCodes.Status401Unauthorized)
+        catch (ApiProblemException ex) when (ex.Status == 401)
         {
-            UI.SetError(new UiError("Ej inloggad", "Logga in för att skapa author."));
+            UI.SetError(new UiError("Ej inloggad", "Logga in för att läsa listan."));
         }
-        catch (ApiProblemException ex) when (ex.Status == StatusCodes.Status403Forbidden)
+        catch (ApiProblemException ex) when (ex.Status == 403)
         {
-            UI.SetError(new UiError("Behörighet saknas", "Denna åtgärd kräver lärare eller admin behörighet."));
+            UI.SetError(new UiError("Behörighet saknas", "Du får inte läsa denna resurs."));
         }
-        catch (ApiProblemException) 
+        catch (ApiProblemException ex)
         {
-            UI.SetError(new UiError("Fel", "Denna åtgärd kräver lärare eller admin behörighet."));
+            UI.SetError(new UiError("Fel vid hämtning", ex.Message));
         }
         finally
         {
@@ -81,9 +85,17 @@ else
             UI.Busy(true);
             await Api.CreateAuthorAsync(_create.Name);
             _create = new();
-            await Load();
+            await Load(); // RÄTT: uppdatera listan efter skapad User
         }
-        catch(ApiProblemException ex)
+        catch (ApiProblemException ex) when (ex.Status == 401)
+        {
+            UI.SetError(new UiError("Ej inloggad", "Logga in för att skapa author."));
+        }
+        catch (ApiProblemException ex) when (ex.Status == 403)
+        {
+            UI.SetError(new UiError("Behörighet saknas", "Denna åtgärd kräver Lärare eller Admin."));
+        }
+        catch (ApiProblemException ex)
         {
             UI.SetError(new UiError("Fel", ex.Message));
         }
@@ -95,6 +107,6 @@ else
 
     public class CreateAuthorDTO
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
     }
 }

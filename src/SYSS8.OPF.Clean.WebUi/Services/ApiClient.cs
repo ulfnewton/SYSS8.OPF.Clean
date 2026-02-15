@@ -1,4 +1,5 @@
 using SYSS8.OPF.Clean.WebApi.Contracts;
+
 using System.Text.Json;
 
 namespace SYSS8.OPF.Clean.WebUi.Services
@@ -8,10 +9,10 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         private readonly IHttpClientFactory _httpClientFactory;
         private HttpClient Client => _httpClientFactory.CreateClient("WebApi");
 
-        public ApiClient(IHttpClientFactory httpClientFactory) 
+        public ApiClient(IHttpClientFactory httpClientFactory)
             => _httpClientFactory = httpClientFactory;
 
-        public record LoginResponse(string Token, string Email, string Role);
+        public record LoginResponse(string Token, string Email, string[] Roles);
 
         public async Task<LoginResponse> LoginAsync(string email, string password)
         {
@@ -102,6 +103,6 @@ namespace SYSS8.OPF.Clean.WebUi.Services
     public class ApiProblemException : Exception
     {
         public int Status { get; set; }
-        public ApiProblemException(string?  message)  : base(message) { }
+        public ApiProblemException(string? message) : base(message) { }
     }
 }

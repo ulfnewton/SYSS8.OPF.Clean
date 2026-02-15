@@ -12,5 +12,5 @@
 
     private bool IsAllowed =>
         Auth.IsAuthenticated &&
-        Roles?.Contains(Auth.Role ?? "", StringComparer.OrdinalIgnoreCase) == true;
+        Roles.Any(role => Auth.Roles?.Contains(role, StringComparer.OrdinalIgnoreCase) == true);
 }

@@ -1,5 +1,6 @@
 namespace SYSS8.OPF.Clean.WebUi.Services
 {
+    // DESIGN-VAL: Minimal token-lagring (minne). I produktion → skyddat lagringsställe.
     public interface ITokenStore
     {
         string? AccessToken { get; }

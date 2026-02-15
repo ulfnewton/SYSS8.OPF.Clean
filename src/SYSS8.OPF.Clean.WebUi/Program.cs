@@ -11,12 +11,19 @@ builder.Services
     .AddScoped<IUiStatus, UiStatus>()
     .AddScoped<JwtMessageHandler>();
 
+// DESIGN-VAL: HTTP-klient mot WebApi.
+// OBS: Basadressen måste matcha WebApi (se launchSettings).
+// Vi lägger även på JwtMessageHandler för att automatiskt inkludera
+// JWT-token i alla anrop till WebApi, vilket gör att vi kan hantera
+// autentisering och auktorisering smidigt i frontend utan att behöva
+// manuellt lägga till token i varje anrop.
 builder.Services.AddHttpClient("WebApi", c =>
 {
     c.BaseAddress = new Uri("https://localhost:5001"); // matchar WebApi
 })
 .AddHttpMessageHandler<JwtMessageHandler>();
 
+// DESIGN-VAL: Tydlig komposition — ApiClient (HTTP), AuthState (appens auth-minne), TokenStore (lagrar access_token)
 builder.Services
     .AddScoped<ApiClient>()
     .AddScoped<AuthState>()
@@ -24,7 +31,8 @@ builder.Services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+// DESIGN-VAL: Utvecklarvänliga fel i Dev
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

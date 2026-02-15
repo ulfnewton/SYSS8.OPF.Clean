@@ -24,13 +24,13 @@
     <a class="dismiss">🗙</a>
 </div>
 
-@* Offline/Reconnecting banner *@
+@* OBS: Offline/Reconnecting banner *@
 @if (Ui.IsOffline)
 {
     <div class="net-banner" role="status" aria-live="polite">Återansluter …</div>
 }
 
-@* Error panel *@
+@* OBS: Standardiserad felpanel (ProblemDetails → UiError) *@
 @if (Ui.Error is not null)
 {
     <div class="error-panel">
@@ -42,7 +42,7 @@
     </div>
 }
 
-@* Busy overlay *@
+@* Busy overlay ger tydlig feedback under async-anrop *@
 @if (Ui.IsBusy)
 {
     <div class="busy-overlay">
@@ -60,6 +60,7 @@
 
     private void OnUiChanged()
     {
+        // DESIGN-VAL: Auto-stäng felpanel efter 5s om användaren inte själv stänger.        
         if (Ui.Error is not null)
         {
             _errorTimer?.Dispose();
