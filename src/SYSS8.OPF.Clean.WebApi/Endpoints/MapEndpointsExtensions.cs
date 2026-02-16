@@ -22,11 +22,15 @@ public static class MapEndpointsExtensions
     // i en endpoint-metod.
     private static IEndpointRouteBuilder MapAuthenticationEndpoints(IEndpointRouteBuilder app)
     {
-        // DESIGN-VAL: Grupperar auth-endpoints för tydlig routing och enklare Swagger-navigering.
+        // DESIGN-VAL: MapGroup ger prefix + taggar och synlighet i Swagger under /auth.
+        // I det här fallet lägger vi till en tag "Auth" på gruppen, vilket kan vara användbart
+        // för dokumentation och verktyg som Swagger/OpenAPI för att kategorisera endpoints.
         var group = app.MapGroup("/auth").WithTags("Auth");
         group.MapPost("/register", AuthenticationEndpoints.Register);
         group.MapPost("/login", AuthenticationEndpoints.Login);
-        // TIPS: "me"-endpointen verifierar att JWT valideras och låter klienten visa användarinfo.
+
+        // Design-val: Lägger till en "me" endpoint som kräver autentisering, för att demonstrera
+        // hur man kan hämta information om den inloggade användaren.
         group.MapGet("/me", AuthenticationEndpoints.Me)
              .RequireAuthorization();
         return app;
