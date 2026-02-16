@@ -2,6 +2,8 @@ using System.Net.Http.Headers;
 
 namespace SYSS8.OPF.Clean.WebUi.Services;
 
+// DESIGN-VAL: DelegatingHandler som automatiskt sätter Authorization: Bearer <token>.
+// Håller "bearer-logiken" på ett ställe → API-anrop i koden blir renare.
 public sealed class JwtMessageHandler : DelegatingHandler
 {
     private readonly ITokenStore _tokens;

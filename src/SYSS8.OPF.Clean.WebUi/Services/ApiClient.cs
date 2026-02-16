@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+
 using SYSS8.OPF.Clean.WebApi.Contracts;
 
 namespace SYSS8.OPF.Clean.WebUi.Services
@@ -53,15 +54,59 @@ namespace SYSS8.OPF.Clean.WebUi.Services
             throw new Exception();
         }
 
+        public async Task<BookDTO> CreateBookAsync(Guid authorId, string title)
+        {
+            var response = await Client.PostAsJsonAsync(
+                $"/authors/{authorId}/books",      // FIX: interpolera
+                new BookDTO(title));
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                return (await response.Content.ReadFromJsonAsync<BookDTO>())!;
+            }
+
+            Throw(await response.Content.ReadAsStringAsync());
+            return null!;
+        }
+
+        public async Task DeleteAuthorAsync(Guid authorId)
+        {
+            var response = await Client.DeleteAsync($"/authors/{authorId}");
+
+            if (response.IsSuccessStatusCode) return;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                throw new ApiProblemException("Inte inloggad eller fel uppgifter")
+                {
+                    Status = StatusCodes.Status401Unauthorized
+                };
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                throw new ApiProblemException("Saknar behörighet att ta bort författare")
+                {
+                    Status = StatusCodes.Status403Forbidden
+                };
+            }
+
+            Throw(await response.Content.ReadAsStringAsync());
+        }
+
         private void Throw(string json)
         {
             try
             {
-                // DESIGN-VAL: ProblemDetails gör att klienten kan visa användarvänliga felmeddelanden.
                 var pd = JsonSerializer.Deserialize<ProblemDetailsDto>(
-                    json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                var msg = (pd?.Title ?? "Problem") + (pd?.Detail is null ? "" : $": {pd.Detail}");
-                throw new ApiProblemException(msg) { Status = pd?.Status ?? 0 };
+                    json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    });
+                throw new ApiProblemException($"{pd?.Title}: {pd?.Detail}")
+                {
+                    Status = pd?.Status ?? 0
+                };
             }
             catch
             {

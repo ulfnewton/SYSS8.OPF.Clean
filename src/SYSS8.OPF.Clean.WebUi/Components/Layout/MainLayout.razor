@@ -60,6 +60,8 @@
 
     private void OnUiChanged()
     {
+        // DESIGN-VAL: Auto-stäng felpanel efter 5s om användaren inte själv stänger.
+        // Kommentera bort om du vill att användaren själv stänger ner fel.
         if (Ui.Error is not null)
         {
             _errorTimer?.Dispose();

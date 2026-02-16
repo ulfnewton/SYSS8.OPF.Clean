@@ -34,12 +34,21 @@
         try
         {
             UI.Busy(true);
-            // INFO: UI ska inte gissa roll – API:t returnerar Role efter validering.
+            // FEL (code‑along): Vi tog roll från UI‑input.
+            //   Auth.SignIn(input.Role, input.Name);
+            //
+            // FIX: Be servern autentisera och ge tillbaka token + alla roller.
             var res = await Api.LoginAsync(_input.Email, _input.Password);
-            // DESIGN-VAL: Token lagras i TokenStore så HttpClient kan återanvända den i handlers.
+
+            // RÄTT: Token lagras i ITokenStore → JwtMessageHandler sätter Authorization‑header automatiskt.
             Tokens.SetToken(res.Token);
-            Auth.SignIn(res.Role, res.Email);
-            // TIPS: Navigation efter login gör att studenten direkt ser auth-skyddad vy.
+
+            // FEL: Vi tog roll från UI‑input, vilket är osäkert och inte speglar verkligheten.
+            // Auth.SignIn(input.Role, input.Name);
+
+            // RÄTT: Signa in med uppgifter från servern (Email + roll).
+            Auth.SignIn(preferredName: res.Email, role: res.Role);
+
             Nav.NavigateTo("/library", forceLoad: false);
         }
         catch (ApiProblemException ex)

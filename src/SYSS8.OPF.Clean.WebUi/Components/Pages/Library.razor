@@ -13,7 +13,7 @@
 }
 else
 {
-    <p>Inloggad som <b>@Auth.PreferredNamed</b> (@Auth.Role)</p>
+    <p>Inloggad som <b>@Auth.PreferredName</b> (@Auth.Role)</p>
 
     <button @onclick="Load">Ladda lista</button>
 
@@ -54,7 +54,12 @@ else
         try
         {
             UI.Busy(true);
-            // INFO: Load hämtar bara listan – separerar läsning från skrivning för tydlighet.
+            // Fel: Vi ska ladda listan med authors, inte skapa en ny author varje gång vi laddar
+            // listan med authors. Detta är en bugg som gör att varje gång man klickar på "Ladda
+            // lista" så skapas en ny author med det namn som står i input-fältet, och sedan laddas
+            // listan med authors inklusive den nyskapade authorn. Om input-fältet är tomt så skapas
+            // en author med tomt namn.
+            // await Api.CreateAuthorAsync(_create.Name);
             _authors = await Api.GetAuthorAsync();
         }
         catch (ApiProblemException ex)
