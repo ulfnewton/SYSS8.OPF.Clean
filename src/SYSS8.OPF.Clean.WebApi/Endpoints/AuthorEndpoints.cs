@@ -8,10 +8,20 @@ using SYSS8.OPF.Clean.Infrastructure;
 using SYSS8.OPF.Clean.WebApi.Contracts;
 
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
+
 public static class AuthorEndpoints
 {
-    public static async Task<Results<Created<Author>, ProblemHttpResult>> CreateAuthor(AuthorDTO dto, AuthorDbContext context)
+    // LÄGG TILL TEMP I AuthorEndpoints.CreateAuthor (första raderna i metoden)
+    public static async Task<Results<Created<Author>, ProblemHttpResult>> CreateAuthor(
+        AuthorDTO dto, AuthorDbContext context, HttpContext http)
     {
+        var user = http.User;
+        var name = user.Identity?.Name ?? "(no name)";
+        var roles = string.Join(", ", user.Claims
+            .Where(c => c.Type == System.Security.Claims.ClaimTypes.Role)
+            .Select(c => c.Value));
+        Console.WriteLine($"[DEBUG] CreateAuthor as {name}; roles: {roles}");
+
         if (string.IsNullOrWhiteSpace(dto.Name))
         {
             var pd = new ProblemDetails
@@ -204,56 +214,11 @@ public static class AuthorEndpoints
         return TypedResults.Ok(await author.FirstOrDefaultAsync());
     }
 
-        public static async Task<Results<Ok<List<Book>>, ProblemHttpResult>> GetBooks(
-            AuthorDbContext context,
-            [FromQuery] Guid? authorId = null)
+    public static async Task<Results<Ok<List<Book>>, ProblemHttpResult>> GetBooks(
+        AuthorDbContext context,
+        [FromQuery] Guid? authorId = null)
     {
-            if (authorId.HasValue && authorId.Value == Guid.Empty)
-            {
-                var pd = new ProblemDetails
-                {
-                    Title = "Empty Id",
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = "Id cannot be empty"
-                };
-
-                return TypedResults.Problem(pd);
-            }
-
-            if (authorId.HasValue)
-            {
-                var authorExists = await context.Authors.AnyAsync(author => author.Id == authorId.Value);
-
-                if (!authorExists)
-                {
-                    var pd = new ProblemDetails
-                    {
-                        Title = "Author Not Found",
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = $"Author with ID '{authorId}' is not found"
-                    };
-
-                    return TypedResults.Problem(pd);
-                }
-            }
-
-            var booksQuery = context.Books.AsQueryable();
-
-            if (authorId.HasValue)
-            {
-                booksQuery = booksQuery.Where(book => book.AuthorId == authorId.Value);
-            }
-
-            var books = await booksQuery.ToListAsync();
-
-        return TypedResults.Ok(books);
-    }
-
-        public static async Task<Results<Ok<Book>, ProblemHttpResult>> GetBook(
-            [FromRoute] Guid bookId,
-            AuthorDbContext context)
-    {
-            if (bookId == Guid.Empty)
+        if (authorId.HasValue && authorId.Value == Guid.Empty)
         {
             var pd = new ProblemDetails
             {
@@ -265,8 +230,53 @@ public static class AuthorEndpoints
             return TypedResults.Problem(pd);
         }
 
-            var book = await context.Books.FirstOrDefaultAsync(
-                existing => existing.Id == bookId);
+        if (authorId.HasValue)
+        {
+            var authorExists = await context.Authors.AnyAsync(author => author.Id == authorId.Value);
+
+            if (!authorExists)
+            {
+                var pd = new ProblemDetails
+                {
+                    Title = "Author Not Found",
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = $"Author with ID '{authorId}' is not found"
+                };
+
+                return TypedResults.Problem(pd);
+            }
+        }
+
+        var booksQuery = context.Books.AsQueryable();
+
+        if (authorId.HasValue)
+        {
+            booksQuery = booksQuery.Where(book => book.AuthorId == authorId.Value);
+        }
+
+        var books = await booksQuery.ToListAsync();
+
+        return TypedResults.Ok(books);
+    }
+
+    public static async Task<Results<Ok<Book>, ProblemHttpResult>> GetBook(
+        [FromRoute] Guid bookId,
+        AuthorDbContext context)
+    {
+        if (bookId == Guid.Empty)
+        {
+            var pd = new ProblemDetails
+            {
+                Title = "Empty Id",
+                Status = StatusCodes.Status400BadRequest,
+                Detail = "Id cannot be empty"
+            };
+
+            return TypedResults.Problem(pd);
+        }
+
+        var book = await context.Books.FirstOrDefaultAsync(
+            existing => existing.Id == bookId);
 
         if (book is null)
         {
@@ -274,7 +284,7 @@ public static class AuthorEndpoints
             {
                 Title = "Book Not Found",
                 Status = StatusCodes.Status404NotFound,
-                    Detail = $"Book with ID '{bookId}' is not found"
+                Detail = $"Book with ID '{bookId}' is not found"
             };
 
             return TypedResults.Problem(pd);
@@ -340,12 +350,12 @@ public static class AuthorEndpoints
         return TypedResults.Created($"/books/{book.Id}", book);
     }
 
-        public static async Task<Results<Ok<Book>, ProblemHttpResult>> UpdateBook(
-            [FromRoute] Guid bookId,
-            BookDTO dto,
-            AuthorDbContext context)
+    public static async Task<Results<Ok<Book>, ProblemHttpResult>> UpdateBook(
+        [FromRoute] Guid bookId,
+        BookDTO dto,
+        AuthorDbContext context)
     {
-            if (bookId == Guid.Empty)
+        if (bookId == Guid.Empty)
         {
             var pd = new ProblemDetails
             {
@@ -369,8 +379,8 @@ public static class AuthorEndpoints
             return TypedResults.Problem(pd);
         }
 
-            var book = await context.Books.FirstOrDefaultAsync(
-                existing => existing.Id == bookId);
+        var book = await context.Books.FirstOrDefaultAsync(
+            existing => existing.Id == bookId);
 
         if (book is null)
         {
@@ -378,15 +388,15 @@ public static class AuthorEndpoints
             {
                 Title = "Book Not Found",
                 Status = StatusCodes.Status404NotFound,
-                    Detail = $"Book with ID '{bookId}' is not found"
+                Detail = $"Book with ID '{bookId}' is not found"
             };
 
             return TypedResults.Problem(pd);
         }
 
-            var isDuplicate = await context.Books.AnyAsync(
-                existing => existing.AuthorId == book.AuthorId && existing.Id != bookId &&
-                            existing.Title.Equals(dto.Title, StringComparison.InvariantCultureIgnoreCase));
+        var isDuplicate = await context.Books.AnyAsync(
+            existing => existing.AuthorId == book.AuthorId && existing.Id != bookId &&
+                        existing.Title.Equals(dto.Title, StringComparison.InvariantCultureIgnoreCase));
 
         if (isDuplicate)
         {
@@ -394,7 +404,7 @@ public static class AuthorEndpoints
             {
                 Title = "Book Title Already Exists",
                 Status = StatusCodes.Status409Conflict,
-                    Detail = $"Author with ID '{book.AuthorId}' has already written a book with the title '{dto.Title}'"
+                Detail = $"Author with ID '{book.AuthorId}' has already written a book with the title '{dto.Title}'"
             };
 
             return TypedResults.Problem(pd);
@@ -406,11 +416,11 @@ public static class AuthorEndpoints
         return TypedResults.Ok(book);
     }
 
-        public static async Task<Results<NoContent, ProblemHttpResult>> DeleteBook(
-            [FromRoute] Guid bookId,
-            AuthorDbContext context)
+    public static async Task<Results<NoContent, ProblemHttpResult>> DeleteBook(
+        [FromRoute] Guid bookId,
+        AuthorDbContext context)
     {
-            if (bookId == Guid.Empty)
+        if (bookId == Guid.Empty)
         {
             var pd = new ProblemDetails
             {
@@ -422,8 +432,8 @@ public static class AuthorEndpoints
             return TypedResults.Problem(pd);
         }
 
-            var book = await context.Books.FirstOrDefaultAsync(
-                existing => existing.Id == bookId);
+        var book = await context.Books.FirstOrDefaultAsync(
+            existing => existing.Id == bookId);
 
         if (book is null)
         {
@@ -431,7 +441,7 @@ public static class AuthorEndpoints
             {
                 Title = "Book Not Found",
                 Status = StatusCodes.Status404NotFound,
-                    Detail = $"Book with ID '{bookId}' is not found"
+                Detail = $"Book with ID '{bookId}' is not found"
             };
 
             return TypedResults.Problem(pd);

@@ -1,0 +1,208 @@
+@base = https://localhost:5001
+@json = application/json
+
+### 1) LOGIN - Teacher
+### @name LoginTeacher
+POST {{base}}/auth/login
+Content-Type: {{json}}
+
+{
+  "email": "teacher@example.com",
+  "password": "Pass123!"
+}
+
+### 2) ME - ska vara 200 om AuthN (JWT) valideras
+### @name MeTeacher
+GET {{base}}/auth/me
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+### 3) PROBE - ren authn utan policy
+### @name ProbeAuthN
+GET {{base}}/diag/authn-ok
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+### 4) CREATE AUTHOR - ska vara 201 (Lärare har policy CanCreateAuthor)
+### @name CreateAuthorTeacher
+POST {{base}}/authors
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+Content-Type: {{json}}
+
+{
+  "name": "Teacher-Skapad-{{$timestamp}}"
+}
+
+### @name LoginTeacher
+POST https://localhost:5001/auth/login
+Content-Type: application/json
+
+{
+  "email": "teacher@example.com",
+  "password": "Pass123!"
+}
+
+### @name AuthnOK
+GET https://localhost:5001/diag/authn-ok
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+### (A) Login som Lärare
+### @name LoginTeacher
+POST https://localhost:5001/auth/login
+Content-Type: application/json
+
+{
+  "email": "teacher@example.com",
+  "password": "Pass123!"
+}
+
+### @name ProbeTeacher
+GET https://localhost:5001/authz/probe
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+### (B) Me – kontrollera att servern läser in roll-claim
+### @name MeTeacher
+GET https://localhost:5001/auth/me
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+
+### (C) Create Author med Lärare-token — borde bli 201
+### @name CreateAuthorTeacher
+POST https://localhost:5001/authors
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "name": "Teacher-Skapad-{{$timestamp}}"
+}
+
+### (D) Create Author utan token — ska bli 401
+POST https://localhost:5001/authors
+Content-Type: application/json
+
+{
+  "name": "UtanToken-{{$timestamp}}"
+}
+
+### (E) Login som Admin → Create Author — borde bli 201
+### @name LoginAdmin
+POST https://localhost:5001/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Pass123!"
+}
+
+### @name CreateAuthorAdmin
+POST https://localhost:5001/authors
+Authorization: Bearer {{LoginAdmin.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "name": "Admin-Skapad-{{$timestamp}}"
+}
+
+################################################################################
+# 1) LOGIN - TEACHER (ska kunna skapa authors)
+################################################################################
+###
+# @name LoginTeacher
+POST {{base}}/auth/login
+Content-Type: {{json}}
+
+{
+  "email": "teacher@example.com",
+  "password": "Pass123!"
+}
+
+################################################################################
+# 2) WHOAMI - verifiera AuthN med Teacher-token
+################################################################################
+###
+# @name WhoAmITeacher
+GET {{base}}/auth/me
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+
+################################################################################
+# 3) GET AUTHORS - öppen lista (200)
+################################################################################
+###
+# @name GetAuthorsOpen
+GET {{base}}/authors
+
+################################################################################
+# 4) CREATE AUTHOR - med Teacher-token (förväntat: 201)
+################################################################################
+###
+# @name CreateAuthorTeacher
+
+POST {{base}}/authors
+Authorization: Bearer {{LoginTeacher.response.body.$.token}}
+Content-Type: {{json}}
+
+{
+  "name": "Teacher-Skapad-{{$timestamp}}"
+}
+
+################################################################################
+# 5) CREATE AUTHOR - utan token (förväntat: 401)
+################################################################################
+###
+# @name CreateAuthorNoToken
+POST {{base}}/authors
+Content-Type: {{json}}
+
+{
+  "name": "UtanToken-{{$timestamp}}"
+}
+
+################################################################################
+# 6) LOGIN - STUDENT (ska INTE få skapa → 403)
+################################################################################
+###
+# @name LoginStudent
+POST {{base}}/auth/login
+Content-Type: {{json}}
+
+{
+  "email": "student@example.com",
+  "password": "Pass123!"
+}
+
+################################################################################
+# 7) CREATE AUTHOR - med Student-token (förväntat: 403)
+################################################################################
+###
+# @name CreateAuthorStudent
+POST {{base}}/authors
+Authorization: Bearer {{LoginStudent.response.body.$.token}}
+Content-Type: {{json}}
+
+{
+  "name": "Student-Förbjuden-{{$timestamp}}"
+}
+
+################################################################################
+# 8) LOGIN - ADMIN (ska kunna skapa authors → 201)
+################################################################################
+###
+# @name LoginAdmin
+POST {{base}}/auth/login
+Content-Type: {{json}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pass123!"
+}
+
+################################################################################
+# 9) CREATE AUTHOR - med Admin-token (förväntat: 201)
+################################################################################
+###
+# @name CreateAuthorAdmin
+POST {{base}}/authors
+Authorization: Bearer {{LoginAdmin.response.body.$.token}}
+Content-Type: {{json}}
+
+{
+  "name": "Admin-Skapad-{{$timestamp}}"
+}

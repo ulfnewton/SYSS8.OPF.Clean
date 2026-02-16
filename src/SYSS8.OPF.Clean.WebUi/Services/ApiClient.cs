@@ -12,7 +12,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public ApiClient(IHttpClientFactory httpClientFactory)
             => _httpClientFactory = httpClientFactory;
 
-        public record LoginResponse(string Token, string Email, string[] Roles);
+        public record LoginResponse(string Token, string Email, string Role);
 
         public async Task<LoginResponse> LoginAsync(string email, string password)
         {

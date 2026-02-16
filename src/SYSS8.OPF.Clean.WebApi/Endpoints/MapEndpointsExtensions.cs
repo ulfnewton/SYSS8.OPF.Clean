@@ -36,6 +36,13 @@ public static class MapEndpointsExtensions
         group.MapGet("/me", AuthenticationEndpoints.Me)
              .RequireAuthorization();
 
+
+        // Lägg en prov-endpoint som kräver exakt samma policy
+        app.MapGet("/authz/probe", () => Results.Ok("OK"))
+           .RequireAuthorization("CanCreateAuthor");
+
+        app.MapGet("/diag/authn-ok", () => Results.Ok("AuthN OK"))
+           .RequireAuthorization();
         return app;
     }
 

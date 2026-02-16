@@ -13,7 +13,7 @@
 }
 else
 {
-    <p>Inloggad som <b>@Auth.PreferredName</b> (@string.Join(", ", Auth.Roles))</p>
+    <p>Inloggad som <b>@Auth.PreferredName</b> (@Auth.Role)</p>
     <button @onclick="Load">Ladda lista</button>
 
     <!-- OBS: Endast Lärare/Admin får skapa -->

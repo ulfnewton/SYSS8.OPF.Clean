@@ -23,8 +23,8 @@ public static class AuthenticationEndpoints
     public sealed record RegisterRequest(string Email, string Password, string Role);
     public sealed record LoginRequest(string Email, string Password);
 
-    // FIX: Returnera alla roller (inte bara första). Klienten kan då fatta UI-beslut utan gissning.
-    public sealed record LoginResponse(string Token, string Email, string[] Roles);
+    // FIX: Returnera en roll. Klienten kan då fatta UI-beslut utan gissning.
+    public sealed record LoginResponse(string Token, string Email, string Role);
 
 
     // RÄTT: Minimal APIs binder body automatiskt för komplexa typer (FromBody valfritt).
@@ -36,12 +36,13 @@ public static class AuthenticationEndpoints
         RoleManager<Role> roleManager)
     {
         if (string.IsNullOrWhiteSpace(request.Email) ||
-            string.IsNullOrWhiteSpace(request.Password))
+            string.IsNullOrWhiteSpace(request.Password) ||
+            string.IsNullOrWhiteSpace(request.Role))
         {
             return Results.BadRequest(new ProblemDetails
             {
                 Title = "Registrering misslyckades",
-                Detail = "Email/lösenord saknas",
+                Detail = "Email/lösenord/roll saknas",
                 Status = StatusCodes.Status400BadRequest
             });
         }
@@ -109,12 +110,13 @@ public static class AuthenticationEndpoints
 
         var roles = await userManager.GetRolesAsync(user);
         var token = await tokenService.CreateAsync(user, roles);
+        var role = roles.FirstOrDefault() ?? string.Empty;
 
         // FEL: Returnera bara första rollen → klienten måste gissa vilken som är "primär" → risk för felaktiga UI-beslut.
         //return Results.Ok(new LoginResponse(token, user.Email ?? string.Empty, roles.FirstOrDefault() ?? string.Empty));
 
-        // RÄTT: Returnera alla roller (inte bara första) så klienten slipper gissa “primär” roll.
-        return Results.Ok(new LoginResponse(token, user.Email ?? string.Empty, roles.ToArray()));
+        // RÄTT: Returnera en roll så klienten slipper gissa “primär” roll.
+        return Results.Ok(new LoginResponse(token, user.Email ?? string.Empty, role));
     }
 
     // Design-val: En "me" endpoint som kräver autentisering, för att demonstrera hur man kan hämta information om den
@@ -127,9 +129,8 @@ public static class AuthenticationEndpoints
         // RÄTT: Name fungerar tack vare ClaimTypes.Name i JwtTokenService.
         var email = user.Identity?.Name ?? string.Empty;
 
-        // TIPS: En användare kan ha flera roller — visa dem.
-        var roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
+        var role = user.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
 
-        return Results.Ok(new { email, roles });
+        return Results.Ok(new { email, role });
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 using SYSS8.OPF.Clean.Infrastructure;
@@ -7,6 +8,7 @@ using SYSS8.OPF.Clean.Infrastructure.Identity;
 using SYSS8.OPF.Clean.WebApi.Auth;
 using SYSS8.OPF.Clean.WebApi.Endpoints;
 
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,8 +42,9 @@ builder.Services
 // till bytes och ställer in TokenValidationParameters för att validera issuer, audience och signing key.
 // Detta gör att vi kan använda JWT för att autentisera användare i vårt API.
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-var jwt = builder.Configuration.GetSection("Jwt");
-var key = jwt["Key"] ?? throw new ArgumentNullException("Jwt:Key is missing in appsettings.json");
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtOptions = jwtSection.Get<JwtOptions>() ?? throw new ArgumentNullException("Jwt");
+var key = jwtOptions.Key ?? throw new ArgumentNullException("Jwt:Key is missing in appsettings.json");
 var keyBytes = Encoding.UTF8.GetBytes(key);
 
 // Authentication
@@ -77,6 +80,33 @@ builder.Services
         // TIPS: Behövs främst om du vill plocka ut och vidareanvända token i andra delar av pipeline.
         options.SaveToken = true;
 
+        // Säkerställ att roll- och namnclaims mappas korrekt från JWT.
+        options.MapInboundClaims = true;
+
+        // Lägg till händelsehanterare för att logga autentiseringsprocessen, vilket kan vara till stor hjälp för felsökning.
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = ctx =>
+            {
+                Console.WriteLine($"[JWT] Header: {ctx.Request.Headers.Authorization}");
+                return Task.CompletedTask;
+            },
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"[JWT] Auth failed: {ctx.Exception.Message}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = ctx =>
+            {
+                var roles = string.Join(", ", ctx.Principal!.FindAll(ClaimTypes.Role).Select(c => c.Value));
+
+                Console.WriteLine($"[JWT] Auth succeeded: {string.Join('|', ctx.Principal.Claims.Select(c => $"{c.Type}={c.Value}"))}");
+                return Task.CompletedTask;
+            }
+        };
+
+        // FIX: Lägg till strikt livstidskontroll och liten tidsmarginal för tydligare beteende. Detta gör att tokens som har
+        // gått ut inte accepteras, och minskar risken att gamla tokens används av misstag.
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -87,9 +117,11 @@ builder.Services
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromMinutes(1),
 
-            ValidIssuer = jwt["Issuer"],
-            ValidAudience = jwt["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
@@ -129,6 +161,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+IdentityModelEventSource.ShowPII = true; // Visa detaljerat fel i loggar
 
 var app = builder.Build();
 

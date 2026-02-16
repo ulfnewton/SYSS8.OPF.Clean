@@ -40,7 +40,7 @@
             // FEL (code‑along): Vi tog roll från UI‑input.
             //   Auth.SignIn(input.Role, input.Name);
             //
-            // FIX: Be servern autentisera och ge tillbaka token + alla roller.
+            // FIX: Be servern autentisera och ge tillbaka token + roll.
             var res = await Api.LoginAsync(input.Email, input.Password);
 
             // RÄTT: Token lagras i ITokenStore → JwtMessageHandler sätter Authorization‑header automatiskt.
@@ -49,8 +49,8 @@
 			// FEL: Vi tog roll från UI‑input, vilket är osäkert och inte speglar verkligheten.
 			// Auth.SignIn(input.Role, input.Name);
 
-            // RÄTT: Signa in med uppgifter från servern (Email + alla roller).
-            Auth.SignIn(preferredName: res.Email, roles: res.Roles);
+            // RÄTT: Signa in med uppgifter från servern (Email + roll).
+            Auth.SignIn(preferredName: res.Email, role: res.Role);
 
             Navigation.NavigateTo("/library");
         }
