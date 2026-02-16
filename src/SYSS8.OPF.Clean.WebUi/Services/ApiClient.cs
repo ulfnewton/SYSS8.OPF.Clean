@@ -12,6 +12,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public ApiClient(IHttpClientFactory httpClientFactory)
             => _httpClientFactory = httpClientFactory;
 
+        // INFO: Role skickas från servern för att UI ska spegla verklig behörighet.
         public record LoginResponse(string Token, string Email, string Role);
 
         public async Task<LoginResponse> LoginAsync(string email, string password)
@@ -21,6 +22,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 throw new ApiProblemException("Inte inloggad eller fel uppgifter") { Status = 401 };
 
+            // TIPS: EnsureSuccessStatusCode ger en tydlig brytpunkt för oväntade fel.
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<LoginResponse>())!;
         }
@@ -28,6 +30,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public async Task<List<AuthorDTO>> GetAuthorAsync()
         {
             var response = await Client.GetAsync("/authors");
+            // INFO: Vi låter HttpClient kasta om status inte är 2xx för att hålla flödet rakt.
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<AuthorDTO>>() ?? [];
         }
@@ -54,6 +57,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         {
             try
             {
+                // DESIGN-VAL: ProblemDetails gör att klienten kan visa användarvänliga felmeddelanden.
                 var pd = JsonSerializer.Deserialize<ProblemDetailsDto>(
                     json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 var msg = (pd?.Title ?? "Problem") + (pd?.Detail is null ? "" : $": {pd.Detail}");

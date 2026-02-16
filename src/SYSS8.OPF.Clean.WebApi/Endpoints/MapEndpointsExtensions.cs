@@ -2,8 +2,10 @@ namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
 public static class MapEndpointsExtensions
 {
+    // DESIGN-VAL: Minimal API ger ett kompakt sätt att visa routing och behörighet i kursen.
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
     {
+        // INFO: Vi delar upp mappingen per resurs (authors/books) för tydlighet.
         MapAuthorEndpoints(app);
         MapBookEndpoints(app);
         return app;
@@ -11,6 +13,7 @@ public static class MapEndpointsExtensions
 
     private static void MapAuthorEndpoints(IEndpointRouteBuilder app)
     {
+        // TIPS: RequireAuthorization kopplar policy-namn till roller i Program.cs.
         app.MapPost("/authors", AuthorEndpoints.CreateAuthor)
             .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
@@ -51,6 +54,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            // OBS: Samma policy-name används för att koppla route till rollkrav.
             .RequireAuthorization("CanCreateAuthor")
             .WithName(nameof(AuthorEndpoints.CreateBook))
             .WithDescription("Creates a book from the given author.");
@@ -58,6 +62,7 @@ public static class MapEndpointsExtensions
 
     private static void MapBookEndpoints(IEndpointRouteBuilder app)
     {
+        // DESIGN-VAL: Separat metod för books gör routing tydlig i undervisning.
         app.MapGet("/books", AuthorEndpoints.GetBooks)
             .Produces(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
@@ -77,6 +82,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            // INFO: Policy-namn hålls stabila så att studenter kopplar rollkrav till endpoint.
             .RequireAuthorization("CanDeleteBook")
             .WithName(nameof(AuthorEndpoints.UpdateBook))
             .WithDescription("Updates a book by id.");

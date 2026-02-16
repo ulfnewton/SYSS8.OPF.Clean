@@ -6,10 +6,12 @@
 }
 
 @code {
+    // DESIGN-VAL: UI-kontroll speglar serverns rollkrav, men ersätter inte server-säkerhet.
     [Parameter] public IEnumerable<string> Roles { get; set; } = Array.Empty<string>();
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private bool IsAllowed =>
         Auth.IsAuthenticated &&
+        // INFO: Enkel rollkontroll räcker i UI när servern redan gör auktoriseringen.
         Roles?.Contains(Auth.Role ?? "", StringComparer.OrdinalIgnoreCase) == true;
 }

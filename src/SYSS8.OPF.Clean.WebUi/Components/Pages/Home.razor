@@ -8,6 +8,7 @@
 <PageTitle>Logga in</PageTitle>
 <h1>Logga in</h1>
 
+<!-- DESIGN-VAL: UI anger bara e-post/lösenord, rollen kommer från servern efter login. -->
 <EditForm Model="_input" OnValidSubmit="Login">
     <div class="mb-2">
         <label>E‑post</label>
@@ -33,9 +34,12 @@
         try
         {
             UI.Busy(true);
+            // INFO: UI ska inte gissa roll – API:t returnerar Role efter validering.
             var res = await Api.LoginAsync(_input.Email, _input.Password);
+            // DESIGN-VAL: Token lagras i TokenStore så HttpClient kan återanvända den i handlers.
             Tokens.SetToken(res.Token);
             Auth.SignIn(res.Role, res.Email);
+            // TIPS: Navigation efter login gör att studenten direkt ser auth-skyddad vy.
             Nav.NavigateTo("/library", forceLoad: false);
         }
         catch (ApiProblemException ex)

@@ -7,15 +7,19 @@ namespace SYSS8.OPF.Clean.WebApi.Auth;
 
 public static class AuthEndpoints
 {
+    // DESIGN-VAL: Request/response-records ligger nära endpoints för att göra undervisningen tydlig.
     public sealed record RegisterRequest(string Email, string Password, string Role);
     public sealed record LoginRequest(string Email, string Password);
+    // INFO: Login returnerar Token + Email + Role så klienten kan visa användare och aktivera UI-regler.
     public sealed record LoginResponse(string Token, string Email, string Role);
 
     public static IEndpointRouteBuilder MapAuth(this IEndpointRouteBuilder app)
     {
+        // DESIGN-VAL: Gruppar auth-endpoints för tydlig routing och enklare Swagger-navigering.
         var group = app.MapGroup("/auth").WithTags("Auth");
         group.MapPost("/register", Register);
         group.MapPost("/login", Login);
+        // TIPS: "me"-endpointen verifierar att JWT valideras och låter klienten visa användarinfo.
         group.MapGet("/me", Me).RequireAuthorization();
         return app;
     }
@@ -51,6 +55,7 @@ public static class AuthEndpoints
         UserManager<User> userMgr,
         IJwtTokenService tokens)
     {
+        // INFO: Minimal API + Identity ger ett rakt loginflöde med tydliga 401-responser.
         var user = await userMgr.FindByEmailAsync(req.Email);
         if (user is null || !await userMgr.CheckPasswordAsync(user, req.Password))
         {
@@ -63,12 +68,15 @@ public static class AuthEndpoints
         }
         var roles = await userMgr.GetRolesAsync(user);
         var token = await tokens.CreateAsync(user, roles);
+        // OBS: Vi returnerar en roll för att UI ska spegla serverns verkliga behörighet.
         return Results.Ok(new LoginResponse(token, user.Email ?? "", roles.FirstOrDefault() ?? ""));
     }
 
     private static IResult Me(ClaimsPrincipal user)
     {
+        // TIPS: Identity sätter ClaimTypes.Name när token skapas, vilket gör Name tillgängligt här.
         var email = user.Identity?.Name ?? "";
+        // INFO: ClaimTypes.Role används av ASP.NET Core för rollbaserad auktorisering.
         var role = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "";
         return Results.Ok(new { email, role });
     }

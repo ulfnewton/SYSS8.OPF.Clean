@@ -6,6 +6,7 @@ namespace SYSS8.OPF.Clean.WebApi.Identity;
 
 public static class IdentitySeeder
 {
+    // INFO: Seeding skapar demo-data så att studenter kan testa flöden direkt.
     public static async Task SeedAsync(IServiceProvider services, CancellationToken ct = default)
     {
         using var scope = services.CreateScope();
@@ -16,11 +17,13 @@ public static class IdentitySeeder
         if (ctx.Database.IsRelational())
             await ctx.Database.MigrateAsync(ct);
 
+        // DESIGN-VAL: Rollerna speglar vanliga kursroller och används i policy-exempel.
         var roles = new[] { "Admin", "Lärare", "Student" };
         foreach (var r in roles)
             if (!await roleMgr.RoleExistsAsync(r))
                 await roleMgr.CreateAsync(new Role { Name = r });
 
+        // OBS: Enkla lösenord underlättar labbflöden (byt i produktion).
         await EnsureUserAsync("admin@example.com",  "Admin",   "Password1!", userMgr, roleMgr);
         await EnsureUserAsync("teacher@example.com","Lärare",  "Password1!", userMgr, roleMgr);
         await EnsureUserAsync("student@example.com","Student", "Password1!", userMgr, roleMgr);
@@ -33,6 +36,7 @@ public static class IdentitySeeder
         var user = await userMgr.FindByEmailAsync(email);
         if (user is null)
         {
+            // TIPS: EmailConfirmed = true gör att vi slipper e-postflöde i kursmiljön.
             user = new User { UserName = email, Email = email, EmailConfirmed = true };
             var create = await userMgr.CreateAsync(user, password);
             if (!create.Succeeded)

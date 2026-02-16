@@ -17,6 +17,7 @@ else
 
     <button @onclick="Load">Ladda lista</button>
 
+    <!-- DESIGN-VAL: RoleGate speglar serverns policy och visar bara UI för tillåtna roller. -->
     <RoleGate Roles="@(new[] { "Lärare", "Admin" })">
         <div class="mt-3">
             <h4>Skapa author (endast Lärare/Admin)</h4>
@@ -53,10 +54,12 @@ else
         try
         {
             UI.Busy(true);
+            // INFO: Load hämtar bara listan – separerar läsning från skrivning för tydlighet.
             _authors = await Api.GetAuthorAsync();
         }
         catch (ApiProblemException ex)
         {
+            // OBS: UI visar fel tydligt så studenter ser skillnad på 401/403/övriga fel.
             UI.SetError(new UiError("Fel vid hämtning", ex.Message));
         }
         finally
@@ -76,10 +79,12 @@ else
         }
         catch (ApiProblemException ex) when (ex.Status == 401)
         {
+            // INFO: 401 betyder att token saknas eller är ogiltig.
             UI.SetError(new UiError("Ej inloggad", "Logga in för att skapa author."));
         }
         catch (ApiProblemException ex) when (ex.Status == 403)
         {
+            // INFO: 403 betyder att användaren är inloggad men saknar rätt roll.
             UI.SetError(new UiError("Behörighet saknas", "Denna åtgärd kräver Lärare eller Admin."));
         }
         catch (ApiProblemException ex)
