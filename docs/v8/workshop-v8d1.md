@@ -1,7 +1,6 @@
 # Workshop – Databassäkerhet – 2026‑02‑16
 
-Arbeta i branchen **`develop/v7/03-ui-login-integration`**. Visual Studio Community är utgångsläge. För Rider finns separata `.http`‑filer i avsnitt 8B.
-
+Arbeta i branchen [**`develop/v7/03-ui-login-integration`**](https://github.com/ulfnewton/SYSS8.OPF.Clean/tree/develop/v7/03-ui-login-integration). Visual Studio Community är utgångsläge. För Rider finns separata `.http`‑filer i avsnitt 8B.
 ***
 
 ## 0) Förutsättningar (engångs)
