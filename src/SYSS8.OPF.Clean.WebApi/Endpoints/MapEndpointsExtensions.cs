@@ -1,3 +1,5 @@
+using SYSS8.OPF.Clean.WebApi.Auth;
+
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
 public static class MapEndpointsExtensions
@@ -6,8 +8,27 @@ public static class MapEndpointsExtensions
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
     {
         // INFO: Vi delar upp mappingen per resurs (authors/books) för tydlighet.
+        MapAuthenticationEndpoints(app);
         MapAuthorEndpoints(app);
         MapBookEndpoints(app);
+        return app;
+    }
+
+    // RÄTT: Minimal APIs binder body automatiskt för komplexa typer (FromBody valfritt).
+    // FIX: Bytte namn från MapAuth → MapAuthenticationEndpoints för att bättre spegla innehållet
+    // FIX: Ändrade private till public så att den kan användas i MapAuthEndpoints
+    // FIX: Tog bort [FromServices] från UserManager och RoleManager, eftersom de
+    // kommer att injiceras automatiskt av ASP.NET Core när de används som parametrar
+    // i en endpoint-metod.
+    private static IEndpointRouteBuilder MapAuthenticationEndpoints(IEndpointRouteBuilder app)
+    {
+        // DESIGN-VAL: Grupperar auth-endpoints för tydlig routing och enklare Swagger-navigering.
+        var group = app.MapGroup("/auth").WithTags("Auth");
+        group.MapPost("/register", AuthenticationEndpoints.Register);
+        group.MapPost("/login", AuthenticationEndpoints.Login);
+        // TIPS: "me"-endpointen verifierar att JWT valideras och låter klienten visa användarinfo.
+        group.MapGet("/me", AuthenticationEndpoints.Me)
+             .RequireAuthorization();
         return app;
     }
 
