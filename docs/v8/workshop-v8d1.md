@@ -136,14 +136,14 @@ Logik för inloggning (token, email, role) finns i `AuthEndpoints.Login`; polici
 @baseUrl = https://localhost:5001
 
 ### LOGIN – Lärare (namngiven request)
-# @name login_vs
+# @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 { "email": "teacher@example.com", "password": "Password1!" }
 ```
 
-**`security_baslinje.http`**
+**`security_baseline.http`**
 
 ```http
 @baseUrl = https://localhost:5001
@@ -155,27 +155,37 @@ Content-Type: application/json
 { "name": "Demo" }
 
 ### 403 – Student saknar policy CanCreateAuthor
-# @name login_student_vs
+# @name loginstudent
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 { "email": "student@example.com", "password": "Password1!" }
 
+###
 POST {{baseUrl}}/authors
 Content-Type: application/json
-Authorization: Bearer {{login_student_vs.response.body.$.token}}
+Authorization: Bearer {{loginstudent.response.body.$.token}}
 
 { "name": "Demo" }
 
 ### 2xx – Lärare har policy CanCreateAuthor
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "teacher@example.com", "password": "Password1!" }
+
+###
 POST {{baseUrl}}/authors
 Content-Type: application/json
-Authorization: Bearer {{login_vs.response.body.$.token}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 { "name": "Demo-OK" }
 
 ### Öppna GET – kräver ingen token
 GET {{baseUrl}}/authors
+
+### Öpnna GET - kräver ingen token
 GET {{baseUrl}}/books
 ```
 
@@ -184,28 +194,34 @@ GET {{baseUrl}}/books
 ```http
 @baseUrl = https://localhost:5001
 
+### Login – Lärare
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "teacher@example.com", "password": "Password1!" }
+
 ### 400 – ogiltig modell (tomt namn)
 POST {{baseUrl}}/authors
 Content-Type: application/json
-Authorization: Bearer {{login_vs.response.body.$.token}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 { "name": "" }
 
 ### 404 – okänt id
 GET {{baseUrl}}/authors/00000000-0000-0000-0000-000000000001
 
-### 409 – dubblett
-# 1) Skapa
+### 409 – dubblett (1) Skapa först
 POST {{baseUrl}}/authors
 Content-Type: application/json
-Authorization: Bearer {{login_vs.response.body.$.token}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 { "name": "Unik" }
 
-# 2) Skapa samma igen -> 409
+### 409 – dubblett (2) Skapa samma igen -> 409
 POST {{baseUrl}}/authors
 Content-Type: application/json
-Authorization: Bearer {{login_vs.response.body.$.token}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 { "name": "Unik" }
 ```
