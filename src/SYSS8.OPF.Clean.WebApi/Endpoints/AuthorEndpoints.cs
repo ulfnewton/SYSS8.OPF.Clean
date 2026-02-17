@@ -25,7 +25,7 @@ public static class AuthorEndpoints
         }
 
         var isDuplicate = await context.Authors.AnyAsync(
-            author => author.Name.Equals(dto.Name, StringComparison.InvariantCultureIgnoreCase));
+            author => author.Name.ToLower() == dto.Name.ToLower());
 
         if (isDuplicate)
         {

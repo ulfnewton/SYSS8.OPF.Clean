@@ -1,0 +1,41 @@
+@baseUrl = https://localhost:5001
+
+### 401 – utan token
+POST {{baseUrl}}/authors
+Content-Type: application/json
+
+{ "name": "Demo" }
+
+### 403 – Student saknar policy CanCreateAuthor
+# @name loginstudent
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "student@example.com", "password": "Password1!" }
+
+###
+POST {{baseUrl}}/authors
+Content-Type: application/json
+Authorization: Bearer {{loginstudent.response.body.$.token}}
+
+{ "name": "Demo" }
+
+### 2xx – Lärare har policy CanCreateAuthor
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "teacher@example.com", "password": "Password1!" }
+
+###
+POST {{baseUrl}}/authors
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.$.token}}
+
+{ "name": "Demo-OK" }
+
+### Öppna GET – kräver ingen token
+GET {{baseUrl}}/authors
+
+### Öpnna GET - kräver ingen token
+GET {{baseUrl}}/books

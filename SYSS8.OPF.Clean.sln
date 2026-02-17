@@ -22,7 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CE5B6B7F-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{5D7ACC49-7A80-49CD-8098-4D0A050C0A9D}"
 	ProjectSection(SolutionItems) = preProject
+		http\auth.http = http\auth.http
 		http\authors.http = http\authors.http
+		http\security-baseline.http = http\security-baseline.http
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v7", "v7", "{BB63DC20-34BF-404D-A3AF-5B45235080D8}"

@@ -1,0 +1,8 @@
+@baseUrl = https://localhost:5001
+
+### LOGIN – Lärare (namngiven request)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "teacher@example.com", "password": "Password1!" }
