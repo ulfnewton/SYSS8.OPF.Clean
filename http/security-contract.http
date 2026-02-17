@@ -1,0 +1,32 @@
+@baseUrl = https://localhost:5001
+
+### Login – Lärare
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "teacher@example.com", "password": "Password1!" }
+
+### 400 – ogiltig modell (tomt namn)
+POST {{baseUrl}}/authors
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.$.token}}
+
+{ "name": "" }
+
+### 404 – okänt id
+GET {{baseUrl}}/authors/00000000-0000-0000-0000-000000000001
+
+### 409 – dubblett (1) Skapa först
+POST {{baseUrl}}/authors
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.$.token}}
+
+{ "name": "Unik" }
+
+### 409 – dubblett (2) Skapa samma igen -> 409
+POST {{baseUrl}}/authors
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.$.token}}
+
+{ "name": "Unik" }
