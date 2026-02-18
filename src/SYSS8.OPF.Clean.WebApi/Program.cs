@@ -7,6 +7,7 @@ using SYSS8.OPF.Clean.WebApi.Auth;
 using SYSS8.OPF.Clean.WebApi.Endpoints;
 using SYSS8.OPF.Clean.WebApi.Identity;
 using Microsoft.AspNetCore.Identity;
+using SYSS8.OPF.Clean.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,10 +101,10 @@ builder.Services.AddAuthorization(options =>
     // behörighetsdefinitionerna och undvika förvirring. Nu kräver "CanCreateAuthor" att användaren har
     // antingen "Admin" eller "Lärare" rollen, medan "CanDeleteAuthor" kräver "Admin" rollen. Samma gäller
     // för "CanCreateBook" och "CanDeleteBook".
-    options.AddPolicy("CanCreateAuthor", policy => policy.RequireRole("Admin", "Lärare"));
-    options.AddPolicy("CanDeleteAuthor", policy => policy.RequireRole("Admin"));   // ← saknades
-    options.AddPolicy("CanCreateBook", policy => policy.RequireRole("Admin", "Lärare")); // ← saknades
-    options.AddPolicy("CanDeleteBook", policy => policy.RequireRole("Admin"));
+    options.AddPolicy(Permissions.Authors_Create, policy => policy.RequireRole(Roles.Admin, Roles.Teacher));
+    options.AddPolicy(Permissions.Authors_Delete, policy => policy.RequireRole(Roles.Admin));   // ← saknades
+    options.AddPolicy(Permissions.Books_Create, policy => policy.RequireRole(Roles.Admin, Roles.Teacher)); // ← saknades
+    options.AddPolicy(Permissions.Books_Delete, policy => policy.RequireRole(Roles.Admin));
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -121,9 +122,13 @@ builder.Services.AddCors(options =>
          .AllowAnyHeader()
          .AllowAnyMethod());
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 var app = builder.Build();
+
 // Seed data
 // Här anropar vi IdentitySeeder.SeedAsync för att seeda vår databas med initiala användare och roller. Detta
 // är viktigt för att vi ska ha några användare att testa med när vi kör applikationen. Genom att använda

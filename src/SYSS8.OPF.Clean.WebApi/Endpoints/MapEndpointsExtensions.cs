@@ -1,4 +1,4 @@
-using SYSS8.OPF.Clean.WebApi.Auth;
+using SYSS8.OPF.Clean.Application;
 
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
@@ -7,7 +7,7 @@ public static class MapEndpointsExtensions
     // DESIGN-VAL: Minimal API ger ett kompakt sätt att visa routing och behörighet i kursen.
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder app)
     {
-        // INFO: Vi delar upp mappingen per resurs (authors/books) för tydlighet.
+        // INFO: Vi delar upp mappingen per resurs (authentication/authors/books) för tydlighet.
         MapAuthenticationEndpoints(app);
         MapAuthorEndpoints(app);
         MapBookEndpoints(app);
@@ -38,12 +38,12 @@ public static class MapEndpointsExtensions
 
     private static void MapAuthorEndpoints(IEndpointRouteBuilder app)
     {
-        // TIPS: RequireAuthorization kopplar policy-namn till roller i Program.cs.
+        // FIX: Använder Permissions konstanterna ifrån Application
         app.MapPost("/authors", AuthorEndpoints.CreateAuthor)
             .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status409Conflict)
-            .RequireAuthorization("CanCreateAuthor")
+            .RequireAuthorization(Permissions.Authors_Create)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.CreateAuthor))
             .WithDescription("Creates an author.");
 
@@ -64,6 +64,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .RequireAuthorization(Permissions.Authors_Create)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.UpdateAuthor))
             .WithDescription("Updates an author.");
 
@@ -71,6 +72,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization(Permissions.Authors_Delete)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.DeleteAuthor))
             .WithDescription("Deletes an author.");
 
@@ -80,7 +82,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
             // OBS: Samma policy-name används för att koppla route till rollkrav.
-            .RequireAuthorization("CanCreateAuthor")
+            .RequireAuthorization(Permissions.Books_Create)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.CreateBook))
             .WithDescription("Creates a book from the given author.");
     }
@@ -108,7 +110,7 @@ public static class MapEndpointsExtensions
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status409Conflict)
             // INFO: Policy-namn hålls stabila så att studenter kopplar rollkrav till endpoint.
-            .RequireAuthorization("CanDeleteBook")
+            .RequireAuthorization(Permissions.Books_Create)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.UpdateBook))
             .WithDescription("Updates a book by id.");
 
@@ -116,7 +118,7 @@ public static class MapEndpointsExtensions
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .RequireAuthorization("CanDeleteBook")
+            .RequireAuthorization(Permissions.Books_Delete)     // Använder Permsisions konstant
             .WithName(nameof(AuthorEndpoints.DeleteBook))
             .WithDescription("Deletes a book by id.");
     }

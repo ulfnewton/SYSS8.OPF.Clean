@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SYSS8.OPF.Clean.Domain;
 using SYSS8.OPF.Clean.Infrastructure;
 using SYSS8.OPF.Clean.WebApi.Contracts;
+using SYSS8.OPF.Clean.WebApi.Identity;
 
 namespace SYSS8.OPF.Clean.WebApi.Endpoints;
 
@@ -45,7 +46,7 @@ public static class AuthorEndpoints
         };
 
         await context.AddAsync(author);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CancellationToken.None);
 
         return TypedResults.Created($"/authors/{author.Id}", author);
     }
@@ -53,7 +54,8 @@ public static class AuthorEndpoints
     public static async Task<Results<Ok<Author>, ProblemHttpResult>> UpdateAuthor(
         [FromRoute] Guid id,
         AuthorDTO dto,
-        AuthorDbContext context)
+        AuthorDbContext context,
+        ICurrentUser current)
     {
         if (id == Guid.Empty)
         {
@@ -93,6 +95,17 @@ public static class AuthorEndpoints
             return TypedResults.Problem(pd);
         }
 
+        // FIX: Här kontrollerar vi ifall det är ägaren eller en admin som genomför denna åtgärd.
+        // Om inte, förbjud åtgärden!
+        var isAdmin = current.Roles.Contains("Admin", StringComparer.OrdinalIgnoreCase);
+        if (!isAdmin && author.CreatedBy != current.UserId)
+            return TypedResults.Problem(new ProblemDetails 
+            {
+                Title = "Forbidden",
+                Detail = "You are not the owner or an admin, and are not allowed to update authors.",
+                Status = 403, 
+            });
+
         var isDuplicate = await context.Authors.AnyAsync(
             existing => existing.Id != id && existing.Name.Equals(dto.Name, StringComparison.InvariantCultureIgnoreCase));
 
@@ -110,7 +123,7 @@ public static class AuthorEndpoints
 
         author.Name = dto.Name;
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CancellationToken.None);
 
         return TypedResults.Ok(author);
     }
