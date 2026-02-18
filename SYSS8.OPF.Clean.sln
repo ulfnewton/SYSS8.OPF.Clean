@@ -18,7 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}"
 	ProjectSection(SolutionItems) = preProject
 		docs\workshop-instructions-2026-02-05.md = docs\workshop-instructions-2026-02-05.md
-		docs\v8\workshop-v8d1.md = docs\v8\workshop-v8d1.md
+		docs\v8\workshop-instructions-2026-02-16.md = docs\v8\workshop-instructions-2026-02-16.md
 	EndProjectSection
 EndProject
 Global
