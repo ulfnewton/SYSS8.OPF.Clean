@@ -16,10 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SYSS8.OPF.Clean.WebUi", "src\SYSS8.OPF.Clean.WebUi\SYSS8.OPF.Clean.WebUi.csproj", "{A732E8DD-3305-43B2-9148-E67C58ECB511}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}"
-	ProjectSection(SolutionItems) = preProject
-		docs\workshop-instructions-2026-02-05.md = docs\workshop-instructions-2026-02-05.md
-		docs\v8\workshop-instructions-2026-02-16.md = docs\v8\workshop-instructions-2026-02-16.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{5D7ACC49-7A80-49CD-8098-4D0A050C0A9D}"
 	ProjectSection(SolutionItems) = preProject
@@ -59,6 +55,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Auktorisering på djupet
 		docs\v7\3-40-problemdetails-ux.md = docs\v7\3-40-problemdetails-ux.md
 		docs\v7\3-50-verification.md = docs\v7\3-50-verification.md
 		docs\v7\3-index.md = docs\v7\3-index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v8", "v8", "{FD78A008-D1E5-4095-A983-41F809A407F3}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v8\workshop-instructions-2026-02-16.md = docs\v8\workshop-instructions-2026-02-16.md
+		docs\v8\workshop-instructions-2026-02-18.md = docs\v8\workshop-instructions-2026-02-18.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v6", "v6", "{87562C1E-6348-41E4-8059-B98FDCEE3735}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v6\workshop-instructions-2026-02-05.md = docs\v6\workshop-instructions-2026-02-05.md
 	EndProjectSection
 EndProject
 Global
@@ -101,6 +108,8 @@ Global
 		{C29D5ECB-BD41-45E5-8964-D9877AA4C0E0} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 		{D86310B4-2E04-41A9-8C84-24C37124908C} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 		{6F0DFF44-25F6-442B-A2B2-3E575F935430} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
+		{FD78A008-D1E5-4095-A983-41F809A407F3} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
+		{87562C1E-6348-41E4-8059-B98FDCEE3735} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}
