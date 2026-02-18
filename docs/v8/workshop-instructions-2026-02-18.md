@@ -1,8 +1,8 @@
-# Workshop - Given/When/Then - 2026-02-18
+med# Workshop - Given/When/Then - 2026-02-18
 
 ## Målet med passet
 
-*   Ni arbetar **i par** (Driver + Navigator).
+*   Ni arbetar **i par** med en Driver (skriver) och en Navigator (kommer med förslag, ställer frågor, osv.). Byte efter halva tiden eller när ni har gjort tre scenarier. 
 *   Poängen är **inte** att “testa GWT‑språket” i sig, utan att **formulera alla delar tydligt före körning**:
 
     - *Given* (identitet/roll + data + målmiljö)
@@ -63,6 +63,7 @@ När vi kör tester i Development är hosten `https://localhost:5001`.
 ### 2) Login‑requests (körs först – ni anpassar endpoint/payload efter ert API)
 
 > Namn: endast a–z/0–9.
+> Byt ut [HTTP-METOD] mot rätt Http-metod.
 
 ```http
 # @name loginteacher
