@@ -1,0 +1,59 @@
+@baseUrl = https://localhost:5001
+@json = application/json
+
+###
+# LISTA alla authors (förväntat: 200, array)
+GET {{baseUrl}}/authors
+
+### SKAPA author
+# @name createAuthor
+POST {{baseUrl}}/authors
+Content-Type: {{json}}
+
+{ "Name": "Douglas Adams" }
+
+###
+@id = {{createAuthor.response.body.$.id}}
+
+###
+# SKAPA ogiltig author (förväntat: 400)
+POST {{baseUrl}}/authors
+Content-Type: {{json}}
+
+{ "Name": "   " }
+
+###
+# HÄMTA en av authors (kopiera ett Id från LISTA eller Location)
+# Sätt variabeln själv när du testkör:
+GET {{baseUrl}}/authors/{{id}}
+
+###
+# UPPDATERA author (förväntat: 200)
+PUT {{baseUrl}}/authors/{{id}}
+Content-Type: {{json}}
+
+{ "Name": "Douglas Adams, Jr." }
+
+###
+# UPPDATERA tomt namn (förväntat: 400)
+PUT {{baseUrl}}/authors/{{id}}
+Content-Type: {{json}}
+
+{ "Name": " " }
+
+###
+# UPPDATERA till ett namn som finns (förväntat: 409)
+# Skapa först en annan author med samma namn,
+# upprepa sedan PUT mot samma id med det namnet.
+PUT {{baseUrl}}/authors/{{id}}
+Content-Type: {{json}}
+
+{ "Name": "Douglas Adams" }
+
+###
+# TA BORT author (förväntat: 204)
+DELETE {{baseUrl}}/authors/{{id}}
+
+###
+# HÄMTA borttagen author (förväntat: 404)
+GET {{baseUrl}}/authors/{{id}}

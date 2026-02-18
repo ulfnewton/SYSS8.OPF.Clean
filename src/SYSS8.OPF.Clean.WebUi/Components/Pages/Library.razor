@@ -1,0 +1,109 @@
+@page "/library"
+@using SYSS8.OPF.Clean.WebApi.Contracts
+@inject ApiClient Api
+@inject AuthState Auth
+@inject IUiStatus UI
+@using SYSS8.OPF.Clean.WebUi.Components.Shared
+
+<h3>Authors</h3>
+
+@if (!Auth.IsAuthenticated)
+{
+    <p>Inte inloggad. <a href="/">Logga in</a>.</p>
+}
+else
+{
+    <p>Inloggad som <b>@Auth.PreferredName</b> (@Auth.Role)</p>
+
+    <button @onclick="Load">Ladda lista</button>
+
+    <!-- DESIGN-VAL: RoleGate speglar serverns policy och visar bara UI för tillåtna roller. -->
+    <RoleGate Roles="@(new[] { "Lärare", "Admin" })">
+        <div class="mt-3">
+            <h4>Skapa author (endast Lärare/Admin)</h4>
+            <input @bind="_create.Name" placeholder="Namn" />
+            <button @onclick="Create" disabled="@string.IsNullOrWhiteSpace(_create.Name)">Skapa</button>
+        </div>
+    </RoleGate>
+
+    @if (_authors is null)
+    {
+        <p><em>Ingen data ännu.</em></p>
+    }
+    else if (_authors.Count == 0)
+    {
+        <p>Tomt.</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var author in _authors)
+            {
+                <li>@author.Name</li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    List<AuthorDTO>? _authors = null;
+    CreateAuthorDTO _create = new();
+
+    async Task Load()
+    {
+        try
+        {
+            UI.Busy(true);
+            // Fel: Vi ska ladda listan med authors, inte skapa en ny author varje gång vi laddar
+            // listan med authors. Detta är en bugg som gör att varje gång man klickar på "Ladda
+            // lista" så skapas en ny author med det namn som står i input-fältet, och sedan laddas
+            // listan med authors inklusive den nyskapade authorn. Om input-fältet är tomt så skapas
+            // en author med tomt namn.
+            // await Api.CreateAuthorAsync(_create.Name);
+            _authors = await Api.GetAuthorAsync();
+        }
+        catch (ApiProblemException ex)
+        {
+            // OBS: UI visar fel tydligt så studenter ser skillnad på 401/403/övriga fel.
+            UI.SetError(new UiError("Fel vid hämtning", ex.Message));
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
+    }
+
+    async Task Create()
+    {
+        try
+        {
+            UI.Busy(true);
+            await Api.CreateAuthorAsync(_create.Name);
+            _create = new();
+            await Load();
+        }
+        catch (ApiProblemException ex) when (ex.Status == 401)
+        {
+            // INFO: 401 betyder att token saknas eller är ogiltig.
+            UI.SetError(new UiError("Ej inloggad", "Logga in för att skapa author."));
+        }
+        catch (ApiProblemException ex) when (ex.Status == 403)
+        {
+            // INFO: 403 betyder att användaren är inloggad men saknar rätt roll.
+            UI.SetError(new UiError("Behörighet saknas", "Denna åtgärd kräver Lärare eller Admin."));
+        }
+        catch (ApiProblemException ex)
+        {
+            UI.SetError(new UiError("Fel", ex.Message));
+        }
+        finally
+        {
+            UI.Busy(false);
+        }
+    }
+
+    public class CreateAuthorDTO
+    {
+        public string Name { get; set; } = "";
+    }
+}

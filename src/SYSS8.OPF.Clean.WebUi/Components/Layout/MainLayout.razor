@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject SYSS8.OPF.Clean.WebUi.Services.IUiStatus Ui
 
 <div class="page">
     <div class="sidebar">
@@ -21,3 +23,70 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@* Offline/Reconnecting banner *@
+@if (Ui.IsOffline)
+{
+    <div class="net-banner" role="status" aria-live="polite">Återansluter …</div>
+}
+
+@* Error panel *@
+@if (Ui.Error is not null)
+{
+    <div class="error-panel">
+        <div class="error-card">
+            <div class="error-title">@Ui.Error.Title</div>
+            <div class="error-detail">@Ui.Error.Detail</div>
+            <button class="btn" @onclick="() => Ui.SetError(null)">Stäng</button>
+        </div>
+    </div>
+}
+
+@* Busy overlay *@
+@if (Ui.IsBusy)
+{
+    <div class="busy-overlay">
+        <div class="spinner" aria-label="Laddar"></div>
+    </div>
+}
+
+@code {
+    private System.Threading.Timer? _errorTimer;
+
+    protected override void OnInitialized()
+    {
+        Ui.Changed += OnUiChanged;
+    }
+
+    private void OnUiChanged()
+    {
+        // DESIGN-VAL: Auto-stäng felpanel efter 5s om användaren inte själv stänger.
+        // Kommentera bort om du vill att användaren själv stänger ner fel.
+        if (Ui.Error is not null)
+        {
+            _errorTimer?.Dispose();
+            _errorTimer = new System.Threading.Timer(_ =>
+            {
+                InvokeAsync(() =>
+                {
+                    Ui.SetError(null);
+                    StateHasChanged();
+                });
+            }, null, TimeSpan.FromSeconds(5), Timeout.InfiniteTimeSpan);
+        }
+        else
+        {
+            // Rensa timer om felet stängs manuellt
+            _errorTimer?.Dispose();
+            _errorTimer = null;
+        }
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Ui.Changed -= OnUiChanged;
+        _errorTimer?.Dispose();
+    }
+}

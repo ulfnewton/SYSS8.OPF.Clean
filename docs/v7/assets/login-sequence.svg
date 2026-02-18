@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="260" aria-label="Login sequence">
+  <style>
+    .b{font:15px sans-serif; fill:#111}
+    .box{stroke:#555; fill:#f7f7f7}
+    .u{fill:#eef7ff}
+    .s{fill:#ffeaea}
+    .arrow{stroke:#666; stroke-width:2; marker-end:url(#m)}
+  </style>
+  <defs>
+    <marker id="m" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <rect x="40" y="40" width="260" height="60" class="box u"/>
+  <text x="50" y="70" class="b">Klient → POST /login</text>
+  <rect x="340" y="40" width="280" height="60" class="box"/>
+  <text x="350" y="70" class="b">Validera användare/lösenord</text>
+  <rect x="660" y="40" width="260" height="100" class="box s"/>
+  <text x="670" y="70" class="b">Skapa JWT</text>
+  <text x="670" y="95" class="b">(sub, email, role, exp)</text>
+  <line x1="300" y1="70" x2="340" y2="70" class="arrow"/>
+  <line x1="620" y1="70" x2="660" y2="70" class="arrow"/>
+</svg>
