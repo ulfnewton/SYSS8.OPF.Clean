@@ -1,4 +1,4 @@
-med# Workshop - Given/When/Then - 2026-02-18
+# Workshop - Given/When/Then - 2026-02-18
 
 ## Målet med passet
 
