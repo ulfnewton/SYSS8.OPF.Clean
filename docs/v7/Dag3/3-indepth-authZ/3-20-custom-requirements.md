@@ -15,7 +15,7 @@ När standardregler inte räcker bygger vi egna logiska vakter.
 ## Hantering av beslut
 I din Handler anropar du `context.Succeed(requirement)` för att släppa igenom användaren. Om du inte gör något, eller anropar `context.Fail()`, nekas åtkomst.
 
-![requirement-handler](assets/requirement-handler.svg)
+![requirement-handler](../assets/requirement-handler.svg)
 
 ---
 

@@ -17,7 +17,7 @@ När du packar upp din token (t.ex. på [jwt.io](https://jwt.io)) ser du:
 - `role`: "Admin" (Detta är vad din Policy letar efter!).
 - `exp`: När biljetten slutar gälla.
 
-![login-seq](assets/login-sequence.svg)
+![login-seq](../assets/login-sequence.svg)
 
 ---
 

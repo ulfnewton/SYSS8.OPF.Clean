@@ -18,7 +18,7 @@ Klienten måste vara förberedd på att servern säger nej:
 - **401 (Unauthorized):** "Jag vet inte vem du är (eller din token har gått ut)". -> *Visa logga in-sidan.*
 - **403 (Forbidden):** "Jag vet vem du är, men du får inte göra detta". -> *Visa ett felmeddelande: "Behörighet saknas".*
 
-![client-token-flow](assets/client-token-flow.svg)
+![client-token-flow](../assets/client-token-flow.svg)
 
 ---
 
