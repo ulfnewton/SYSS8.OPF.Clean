@@ -1,5 +1,9 @@
 # Teori v7 – Identity & JWT
 
+[◀ Till kursens index](../index.md)
+
+---
+
 Läs i ordning inför passet för att förstå hur säkerhet implementeras i Clean Architecture:
 
 1. [Översikt & lärandemål](./1-00-overview.md)

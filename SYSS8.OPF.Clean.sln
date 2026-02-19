@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "http", "http", "{5D7ACC49-7
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v7", "v7", "{BB63DC20-34BF-404D-A3AF-5B45235080D8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\index-2.md = docs\v7\index-2.md
+		docs\v7\index.md = docs\v7\index.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Identity & Jwt", "1. Identity & Jwt", "{C29D5ECB-BD41-45E5-8964-D9877AA4C0E0}"
 	ProjectSection(SolutionItems) = preProject
@@ -69,8 +73,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v6", "v6", "{87562C1E-6348-
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dag 1", "Dag 1", "{742647A6-A656-4311-8D01-5450F6DB8425}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\Dag1\00-overview.md = docs\v7\Dag1\00-overview.md
+		docs\v7\Dag1\index.md = docs\v7\Dag1\index.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dag 3", "Dag 3", "{D5208F7C-E129-4DE4-BA64-1DF2DE0D1743}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v7\Dag3\00-day-overview.md = docs\v7\Dag3\00-day-overview.md
+		docs\v7\Dag3\workshop.md = docs\v7\Dag3\workshop.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Teori", "1. Teori", "{8CC39E25-F303-48EE-A210-69B16FFD8E9D}"
 	ProjectSection(SolutionItems) = preProject

@@ -5,6 +5,7 @@
 ---
 
 ## Idé
+
 Ibland vet vi inte om en användare får göra något förrän vi har hämtat objektet från databasen. 
 *Exempel: Alla lärare får skapa böcker, men bara läraren som skapade boken får radera den.*
 
@@ -13,7 +14,7 @@ Ibland vet vi inte om en användare får göra något förrän vi har hämtat ob
 2. Kontrollera: `var result = await _authService.AuthorizeAsync(User, book, "IsBookOwner");`
 3. Agera: Om `result.Succeeded` är falskt, returnera `Forbid()`.
 
-![resource-authorization](assets/resource-authorization.svg)
+![resource-authorization](../assets/resource-authorization.svg)
 
 ---
 

@@ -17,7 +17,7 @@ Istället för att strössla `[Authorize(Roles = "Admin")]` överallt, bygger vi
 - **DefaultPolicy:** Vad som händer när du bara skriver `[Authorize]`.
 - **FallbackPolicy:** En global säkerhetsinställning. Om den är satt, krävs auktorisering på *alla* endpoints som inte har `[AllowAnonymous]`.
 
-![policy-diagram](assets/policy-diagram.svg)
+![policy-diagram](../assets/policy-diagram.svg)
 
 ---
 

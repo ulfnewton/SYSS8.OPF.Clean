@@ -1,6 +1,6 @@
 # **Code‑along: Från noll till komplett Identity‑pipeline**
 
-[Nästa: Verifikations ritual ▶](./index-2.md)
+[Dag1 – Översikt](./Dag1/index.md) | [Dag3 – Översikt](./Dag3/00-day-overview.md) | [Nästa: Verifieringsritual ▶](./index-2.md)
 
 ---
 
@@ -40,3 +40,7 @@ Bygga hela säkerhetskedjan i praktiken:
 Kunna följa – och felsöka – hela kedjan:
 
 **UI → API → JWT‑validering → Policy‑beslut → 401/403/2xx → UI‑reaktion**
+
+---
+
+[Dag1 – Översikt](./Dag1/index.md) | [Dag3 – Översikt](./Dag3/00-day-overview.md) | [Nästa: Verifieringsritual ▶](./index-2.md)

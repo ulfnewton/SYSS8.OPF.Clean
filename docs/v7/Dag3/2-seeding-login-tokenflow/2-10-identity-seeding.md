@@ -14,7 +14,7 @@ Utan seeding startar din applikation helt tom. Genom att koda in seeding sparar 
 2. **Users:** Skapa själva användarkontona.
 3. **Assignment:** Koppla ihop användare med rätt hink.
 
-![identity-seeding-flow](assets/identity-seeding.svg)
+![identity-seeding-flow](../assets/identity-seeding.svg)
 
 > **Tips:** Kör seeding direkt efter `app.Build()` i  `Program.cs` (vilken?). Det garanterar att datan finns där innan första användaren hinner blinka.
 

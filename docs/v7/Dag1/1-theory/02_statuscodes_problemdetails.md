@@ -1,5 +1,8 @@
-
 # Statuskoder & ProblemDetails
+
+[◀ Föregående](./01_authn_vs_authz.md) | [Nästa ▶](./03_ui_reaction_patterns.md)
+
+---
 
 ## Vanliga koder
 - 201 Created (skapad resurs)
@@ -17,3 +20,7 @@
 ## Rekommendation
 - Låt **401/403** returnera **ProblemDetails** konsekvent.
 - Låt UI:n läsa `status` och `detail` för att visa användbar feedback.
+
+---
+
+[◀ Föregående](./01_authn_vs_authz.md) | [Nästa ▶](./03_ui_reaction_patterns.md)

@@ -1,5 +1,8 @@
-
 # Egen auth-kedja
+
+[◀ Föregående](./1-policy-matrix.md) | [Nästa ▶](./3-tasks.md)
+
+---
 
 ```mermaid
 sequenceDiagram
@@ -23,3 +26,7 @@ sequenceDiagram
   APP-->>API: Result
   API-->>UI: 201/401/403 + ProblemDetails
 ```
+
+---
+
+[◀ Föregående](./1-policy-matrix.md) | [Nästa ▶](./3-tasks.md)

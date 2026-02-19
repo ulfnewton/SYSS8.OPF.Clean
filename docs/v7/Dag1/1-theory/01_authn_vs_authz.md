@@ -1,6 +1,10 @@
 
 # AuthN vs AuthZ – översikt
 
+[◀ Översikt](../00-overview.md) | [Nästa ▶](./02_statuscodes_problemdetails.md)
+
+---
+
 **AuthN (Authentication)** svarar på *vem* användaren är. **AuthZ (Authorization)** svarar på *vad* användaren får göra.
 
 ## Kedjan UI → API → App → Domain → Infra
@@ -34,3 +38,6 @@ flowchart TD
   class OK good
   class U401,U403 bad
 ```
+
+---
+[◀ Översikt](../00-overview.md) | [Nästa ▶](./02_statuscodes_problemdetails.md)

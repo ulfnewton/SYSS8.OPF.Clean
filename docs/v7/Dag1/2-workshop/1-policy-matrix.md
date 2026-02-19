@@ -1,5 +1,8 @@
-
 # Policy- och endpointmatris
+
+[◀ Föregående](../1-theory/03_ui_reaction_patterns.md) | [Nästa ▶](./2-chain-diagram.md)
+
+---
 
 | Resurs | Verb | Policy | Roll(er) | Kommentar |
 |-------|------|--------|----------|-----------|
@@ -9,3 +12,7 @@
 
 ## Egen matris
 _Fyll i för er domän._
+
+---
+
+[◀ Föregående](../1-theory/03_ui_reaction_patterns.md) | [Nästa ▶](./2-chain-diagram.md)

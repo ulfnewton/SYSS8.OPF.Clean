@@ -1,4 +1,4 @@
-# 001 Översikt & mål – Auktorisering på djupet
+# Översikt & mål – Auktorisering på djupet
 
 [◀ Till index](./3-index.md) | [Nästa: Policy‑design ▶](./3-10-policy-design.md)
 

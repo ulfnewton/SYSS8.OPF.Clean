@@ -2,6 +2,8 @@
 
 [◀ Föregående: Boardingkortet](./1-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](./1-40-policies-and-ui.md)
 
+---
+
 I ASP.NET Core hanteras säkerhet som ett löpande band (Middleware). Ordningen är kritisk.
 
 ![auth-flow](assets/auth-flow.svg)
@@ -13,4 +15,5 @@ I ASP.NET Core hanteras säkerhet som ett löpande band (Middleware). Ordningen 
 4.  **Endpoint anropas:** Om båda ovan godkänts körs din kod.
 
 ---
-[◀ Föregående: Boardingkortet](.-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](.-40-policies-and-ui.md)
+
+[◀ Föregående: Boardingkortet](./1-25-the-boarding-pass.md) | [Nästa: Policies & UI ▶](./1-40-policies-and-ui.md)

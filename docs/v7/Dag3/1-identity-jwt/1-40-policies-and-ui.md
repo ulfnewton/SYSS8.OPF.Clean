@@ -1,6 +1,8 @@
 # Policies & UI‑beteenden
 
-[◀ Föregående: Auth-pipeline](./1-30-pipeline-concepts.md) | [Nästa: Verifieringsritual ▶](./1-50-verification.md)
+[◀ Föregående: Auth‑pipeline](./1-30-pipeline-concepts.md) | [Nästa: Verifieringsritual ▶](./1-50-verification.md)
+
+--
 
 ## Varför Policies istället för bara Roller?
 Vi använder Policies (t.ex. `CanCreateAuthor`) för att frikoppla *vad* man får göra från *vem* man är.
@@ -12,4 +14,5 @@ Vi använder Policies (t.ex. `CanCreateAuthor`) för att frikoppla *vad* man få
 Kom ihåg: Att dölja en knapp i Blazor är **UX**, inte säkerhet. En kunnig användare kan fortfarande anropa API:et manuellt. Därför måste säkerheten alltid finnas på servern först.
 
 ---
-[◀ Föregående: Auth-pipeline](.-30-pipeline-concepts.md) | [Nästa: Verifieringsritual ▶](.-50-verification.md)
+
+[◀ Föregående: Auth‑pipeline](./1-30-pipeline-concepts.md) | [Nästa: Verifieringsritual ▶](./1-50-verification.md)

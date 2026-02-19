@@ -1,5 +1,9 @@
 # Teori v7 – Seeding, Login & Tokenflöde
 
+[◀ Till kursens index](../index.md)
+
+---
+
 Läs i ordning inför passet för att sätta identitet, inloggning och klientens tokenflöde på plats:
 
 1. [Översikt & mål](./2-00-overview.md)
@@ -8,4 +12,7 @@ Läs i ordning inför passet för att sätta identitet, inloggning och klientens
 4. [Klientens tokenflöde](./2-30-client-token-flow.md)
 5. [Verifieringsritual & felsökning](./2-40-verification.md)
 
+---
+
 [◀ Till kursens index](../index.md)
+ 

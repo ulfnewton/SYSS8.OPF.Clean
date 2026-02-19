@@ -1,5 +1,6 @@
 # **Verifieringsritual – Säkerställ att kedjan fungerar**
 
+[◀ Till kursens index](./index.md)
 
 ---
 
@@ -45,3 +46,7 @@ Bekräfta att hela AuthN/AuthZ‑flödet fungerar:
 *   Kontrollera **stavning av roller/policies**
 *   Kontrollera att UI faktiskt **skickar token**
 *   Kontrollera **Issuer/Audience/Key**
+
+---
+
+[◀ Till kursens index](./index.md)
