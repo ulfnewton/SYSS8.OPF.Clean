@@ -1,3 +1,4 @@
+
 @page "/"
 @inject ApiClient Api
 @inject ITokenStore Tokens
@@ -5,26 +6,28 @@
 @inject NavigationManager Nav
 @inject IUiStatus UI
 
-<PageTitle>Logga in</PageTitle>
-<h1>Logga in</h1>
+<PageTitle>Sign in</PageTitle>
 
-<!-- DESIGN-VAL: UI anger bara e-post/lösenord, rollen kommer från servern efter login. -->
+<h1 class="h3 mb-4">Sign in</h1>
+
 <EditForm Model="_input" OnValidSubmit="Login">
-    <div class="mb-2">
-        <label>E‑post</label>
-        <InputText @bind-Value="_input.Email" />
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" @bind-Value="_input.Email" class="form-control" />
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="pwd" class="form-label">Password</label>
+            <InputText id="pwd" type="password" @bind-Value="_input.Password" class="form-control" />
+        </div>
+        <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+            <span class="text-body-secondary small">
+                Demo accounts: admin/teacher/student@example.com (Password1!)
+            </span>
+        </div>
     </div>
-    <div class="mb-2">
-        <label>Lösenord</label>
-        <InputText @bind-Value="_input.Password" type="password" />
-    </div>
-    <button>Logga in</button>
 </EditForm>
-
-<p class="mt-3">
-    <em>Demo‑konton:</em> <code>admin@example.com</code>, <code>teacher@example.com</code>,
-    <code>student@example.com</code> (lösen: <code>Password1!</code>)
-</p>
 
 @code {
     Input _input = new() { Email = "teacher@example.com", Password = "Password1!" };
@@ -34,36 +37,19 @@
         try
         {
             UI.Busy(true);
-            // FEL (code‑along): Vi tog roll från UI‑input.
-            //   Auth.SignIn(input.Role, input.Name);
-            //
-            // FIX: Be servern autentisera och ge tillbaka token + alla roller.
             var res = await Api.LoginAsync(_input.Email, _input.Password);
-
-            // RÄTT: Token lagras i ITokenStore → JwtMessageHandler sätter Authorization‑header automatiskt.
             Tokens.SetToken(res.Token);
-
-            // FEL: Vi tog roll från UI‑input, vilket är osäkert och inte speglar verkligheten.
-            // Auth.SignIn(input.Role, input.Name);
-
-            // RÄTT: Signa in med uppgifter från servern (Email + roll).
-            Auth.SignIn(preferredName: res.Email, role: res.Role);
-
-            Nav.NavigateTo("/library", forceLoad: false);
+            Auth.SignIn(role: res.Role, preferredName: res.Email ?? "");
+            Nav.NavigateTo("/library");
         }
         catch (ApiProblemException ex)
         {
-            UI.SetError(new UiError("Inloggning misslyckades", ex.Message));
+            UI.SetError(new UiError("Sign-in failed", ex.Message));
         }
         finally
         {
             UI.Busy(false);
         }
     }
-
-    public class Input
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
+    public class Input { public string Email { get; set; } = ""; public string Password { get; set; } = ""; }
 }

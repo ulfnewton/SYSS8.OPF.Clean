@@ -1,0 +1,8 @@
+
+@inject IUiStatus Ui
+@if (Ui.IsBusy)
+{
+  <div class="busy-overlay" role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner-border text-primary" style="width:2.5rem;height:2.5rem"></div>
+  </div>
+}

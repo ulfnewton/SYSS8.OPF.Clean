@@ -1,0 +1,84 @@
+
+@typeparam TItem
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="h4 m-0">@Title</h2>
+  <div class="d-flex gap-2">
+    @if (CanCreate) {
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@CreateModalId">Create</button>
+    }
+    <button class="btn btn-outline-secondary" @onclick="Load">Refresh</button>
+  </div>
+</div>
+
+@if (_items is null)
+{
+  <div class="text-body-secondary">No data yet.</div>
+}
+else if (_items.Count == 0)
+{
+  <div>Empty.</div>
+}
+else
+{
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+    @foreach (var it in _items)
+    {
+      <div class="col">@ItemTemplate(it)</div>
+    }
+  </div>
+}
+
+@if (CanCreate)
+{
+<div class="modal fade" id="@CreateModalId" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">@CreateTitle</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <EditForm Model="@_createModel" OnValidSubmit="HandleCreate">
+      <div class="modal-body">@CreateTemplate</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </EditForm>
+  </div></div>
+</div>
+}
+
+@code{
+  [Parameter] public string Title { get; set; } = "Items";
+  [Parameter] public bool CanCreate { get; set; } = true;
+  [Parameter] public string CreateTitle { get; set; } = "Create";
+
+  [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+  [Parameter] public RenderFragment? CreateTemplate { get; set; }
+
+  [Parameter] public Func<Task<List<TItem>>> OnLoad { get; set; } = default!;
+  [Parameter] public Func<TItem, Task> OnCreate { get; set; } = default!;
+
+  private List<TItem>? _items;
+  private TItem _createModel = default!;
+
+  string CreateModalId => $"{IdBase}_create";
+  [Parameter] public string IdBase { get; set; } = "entitycrud";
+
+  protected override async Task OnInitializedAsync() => await Load();
+
+  public async Task Load()
+  {
+    _items = await OnLoad();
+    StateHasChanged();
+  }
+
+  public void SetCreateModel(TItem model) { _createModel = model; }
+
+  private async Task HandleCreate()
+  {
+    await OnCreate(_createModel);
+    await Load();
+    // No auto-dismiss to avoid custom JS interop
+  }
+}

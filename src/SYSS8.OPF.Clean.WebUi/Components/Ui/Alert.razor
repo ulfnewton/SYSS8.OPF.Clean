@@ -1,0 +1,27 @@
+
+@if (!string.IsNullOrWhiteSpace(Message))
+{
+  <div class="alert @Css d-flex align-items-start gap-2" role="@Role" aria-live="@AriaLive">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    { <div><div class="fw-semibold mb-1">@Title</div><div>@Message</div></div> }
+    else { <div>@Message</div> }
+
+    @if (Dismissable)
+    {
+        <button type="button" class="btn-close ms-auto" aria-label="Close" @onclick="OnClose"></button>
+    }
+  </div>
+}
+
+@code{
+  [Parameter] public string? Severity { get; set; } = "info"; // info|success|warning|danger
+  [Parameter] public string? Title { get; set; }
+  [Parameter] public string? Message { get; set; }
+  [Parameter] public bool Dismissable { get; set; }
+  [Parameter] public string Role { get; set; } = "status";
+  [Parameter] public string AriaLive { get; set; } = "polite";
+  [Parameter] public EventCallback OnDismiss { get; set; }
+  string Css => Severity?.ToLowerInvariant() switch {
+    "success"=>"alert-success","warning"=>"alert-warning","danger"=>"alert-danger",_=>"alert-info"};
+  Task OnClose() => OnDismiss.InvokeAsync();
+}

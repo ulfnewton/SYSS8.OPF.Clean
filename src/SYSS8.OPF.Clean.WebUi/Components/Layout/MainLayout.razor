@@ -1,92 +1,41 @@
+
 @inherits LayoutComponentBase
 @implements IDisposable
-@inject SYSS8.OPF.Clean.WebUi.Services.IUiStatus Ui
+@inject IUiStatus Ui
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand bg-body-tertiary border-bottom">
+    <div class="container">
+      <NavLink class="navbar-brand" href="" Match="NavLinkMatch.All">SYSS8.OPF.Clean</NavLink>
+      <div class="navbar-nav">
+        <NavLink class="nav-link" href="/library">Library</NavLink>
+      </div>
     </div>
+  </nav>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+  <main class="flex-grow-1 py-4">
+    <div class="container">
+      @if (Ui.Error is not null)
+      {
+        <Alert Severity="danger" Title="@Ui.Error.Title" Message="@Ui.Error.Detail"
+               Dismissable="true" Role="alert" AriaLive="assertive"
+               OnDismiss="@(()=>Ui.SetError(null))" />
+      }
+      <div class="content-card bg-body p-4">
+        @Body
+      </div>
+    </div>
+  </main>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+  <footer class="border-top py-3">
+    <div class="container text-body-secondary small">© OPF Clean — Classroom Build</div>
+  </footer>
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+<BusyOverlay />
 
-@* Offline/Reconnecting banner *@
-@if (Ui.IsOffline)
-{
-    <div class="net-banner" role="status" aria-live="polite">Återansluter …</div>
-}
-
-@* Error panel *@
-@if (Ui.Error is not null)
-{
-    <div class="error-panel">
-        <div class="error-card">
-            <div class="error-title">@Ui.Error.Title</div>
-            <div class="error-detail">@Ui.Error.Detail</div>
-            <button class="btn" @onclick="() => Ui.SetError(null)">Stäng</button>
-        </div>
-    </div>
-}
-
-@* Busy overlay *@
-@if (Ui.IsBusy)
-{
-    <div class="busy-overlay">
-        <div class="spinner" aria-label="Laddar"></div>
-    </div>
-}
-
-@code {
-    private System.Threading.Timer? _errorTimer;
-
-    protected override void OnInitialized()
-    {
-        Ui.Changed += OnUiChanged;
-    }
-
-    private void OnUiChanged()
-    {
-        // DESIGN-VAL: Auto-stäng felpanel efter 5s om användaren inte själv stänger.
-        // Kommentera bort om du vill att användaren själv stänger ner fel.
-        if (Ui.Error is not null)
-        {
-            _errorTimer?.Dispose();
-            _errorTimer = new System.Threading.Timer(_ =>
-            {
-                InvokeAsync(() =>
-                {
-                    Ui.SetError(null);
-                    StateHasChanged();
-                });
-            }, null, TimeSpan.FromSeconds(5), Timeout.InfiniteTimeSpan);
-        }
-        else
-        {
-            // Rensa timer om felet stängs manuellt
-            _errorTimer?.Dispose();
-            _errorTimer = null;
-        }
-
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        Ui.Changed -= OnUiChanged;
-        _errorTimer?.Dispose();
-    }
+@code{
+  protected override void OnInitialized() => Ui.Changed += OnUiChanged;
+  void OnUiChanged() => InvokeAsync(StateHasChanged);
+  public void Dispose() => Ui.Changed -= OnUiChanged;
 }

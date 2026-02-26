@@ -1,0 +1,34 @@
+
+@typeparam TItem
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="h4 m-0">@Title</h2>
+  <div>@Toolbar</div>
+</div>
+
+@if (Items is null)
+{
+  <div class="text-body-secondary">No data yet.</div>
+}
+else if (!Items.Any())
+{
+  <div>Empty.</div>
+}
+else
+{
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+    @foreach (var it in Items)
+    {
+      <div class="col">
+        @ItemTemplate(it)
+      </div>
+    }
+  </div>
+}
+
+@code{
+  [Parameter] public string Title { get; set; } = "Items";
+  [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
+  [Parameter] public RenderFragment? Toolbar { get; set; }
+  [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+}
