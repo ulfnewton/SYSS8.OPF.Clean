@@ -1,4 +1,3 @@
-
 @inherits LayoutComponentBase
 @implements IDisposable
 @inject IUiStatus Ui
@@ -15,12 +14,14 @@
 
   <main class="flex-grow-1 py-4">
     <div class="container">
+      @* Centralt felområde: här visar vi Problem Details (titel + förklaring) när sidor sätter Ui.Error *@
       @if (Ui.Error is not null)
       {
         <Alert Severity="danger" Title="@Ui.Error.Title" Message="@Ui.Error.Detail"
                Dismissable="true" Role="alert" AriaLive="assertive"
                OnDismiss="@(()=>Ui.SetError(null))" />
       }
+
       <div class="content-card bg-body p-4">
         @Body
       </div>
@@ -32,9 +33,11 @@
   </footer>
 </div>
 
+@* Global “upptaget”-yta: visas när någon sida anropar UI.Busy(true) *@
 <BusyOverlay />
 
 @code{
+  // När status ändras (busy/fel) ritar vi om layouten så att Alert/BusyOverlay uppdateras direkt
   protected override void OnInitialized() => Ui.Changed += OnUiChanged;
   void OnUiChanged() => InvokeAsync(StateHasChanged);
   public void Dispose() => Ui.Changed -= OnUiChanged;

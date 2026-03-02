@@ -1,6 +1,9 @@
-
 @typeparam TItem
 
+@* Återanvändbart CRUD-skal:
+   - Topprad med titel/verktyg
+   - Nät med item‑kort
+   - Skapa‑modal som postas via EditForm (ingen JS-interop) *@
 <div class="d-flex align-items-center justify-content-between mb-3">
   <h2 class="h4 m-0">@Title</h2>
   <div class="d-flex gap-2">
@@ -79,6 +82,6 @@ else
   {
     await OnCreate(_createModel);
     await Load();
-    // No auto-dismiss to avoid custom JS interop
+    // Ingen auto-stängning av modalen: vi undviker JS-interop i denna övning
   }
 }

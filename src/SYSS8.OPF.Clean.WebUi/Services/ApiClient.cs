@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 using SYSS8.OPF.Clean.WebApi.Contracts;
@@ -13,7 +14,6 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public ApiClient(IHttpClientFactory httpClientFactory)
             => _httpClientFactory = httpClientFactory;
 
-        // Server returns role so UI reflects real permissions.
         public record LoginResponse(string Token, string Email, string Role);
 
         public async Task<LoginResponse> LoginAsync(string email, string password)
@@ -21,7 +21,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
             var response = await Client.PostAsJsonAsync("/auth/login", new { email, password });
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
-                await ThrowAsync(response); // ensures Problem is propagated correctly
+                await ThrowAsync(response);
 
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<LoginResponse>())!;
@@ -30,6 +30,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public async Task<List<AuthorDTO>> GetAuthorAsync()
         {
             var response = await Client.GetAsync("/authors");
+
             if (!response.IsSuccessStatusCode)
                 await ThrowAsync(response);
 
@@ -61,6 +62,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public async Task DeleteAuthorAsync(Guid authorId)
         {
             var response = await Client.DeleteAsync($"/authors/{authorId}");
+
             if (response.IsSuccessStatusCode) return;
 
             await ThrowAsync(response);
@@ -78,8 +80,9 @@ namespace SYSS8.OPF.Clean.WebUi.Services
             ProblemDetailsDto? pd = null;
 
             var mediaType = response.Content.Headers.ContentType?.MediaType;
-            var looksLikeJson = string.Equals(mediaType, "application/problem+json", StringComparison.OrdinalIgnoreCase)
-                              || string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase);
+            var looksLikeJson =
+                string.Equals(mediaType, "application/problem+json", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase);
 
             if (looksLikeJson)
             {
@@ -115,17 +118,16 @@ namespace SYSS8.OPF.Clean.WebUi.Services
 
     public class ProblemDetailsDto
     {
-        public string? Title { get; set; }
-        public string? Detail { get; set; }
-        public int? Status { get; set; }
-        public string? Type { get; set; }
+        public string? Title { get; set; }  // what went wrong (short)
+        public string? Detail { get; set; } // why it went wrong (actionable)
+        public int? Status { get; set; }    // HTTP code (e.g., 401/403/404/409)
+        public string? Type { get; set; }   // optional link to a spec or docs
     }
 
     public class ApiProblemException : Exception
     {
-        public int Status { get; set; }
-
-        public ProblemDetailsDto? Problem { get; }
+        public int Status { get; set; }                    // numerisk HTTP-statuskod (e.g., 401/403/404/409)
+        public ProblemDetailsDto? Problem { get; }         // varlfri ProblemDetailsDto med mer info (Title, Detail, Type)
 
         public ApiProblemException(string? message) : base(message) { }
 

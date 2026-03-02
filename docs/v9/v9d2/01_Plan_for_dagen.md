@@ -1,7 +1,7 @@
 
 # Plan för dagen – Systemtänkande v9d2
 
-Denna plan leder dig genom dagen i en sammanhängande berättelse: **först förstå helheten (C4), sedan motivera beslut (ADR), och till sist pröva ansvar och gränser (Microservices)**. Den följer samma struktur som presentationen *Systemtänkande_v9d2.pptx*. citeturn2search1
+Denna plan leder dig genom dagen i en sammanhängande berättelse: **först förstå helheten (C4), sedan motivera beslut (ADR), och till sist pröva ansvar och gränser (Microservices)**. Den följer samma struktur som presentationen *Systemtänkande_v9d2.pdf*. 
 
 ## Förmiddag: C4 – se helheten
 Du börjar med att skapa tre bilder som tillsammans berättar om ert systems helhet:

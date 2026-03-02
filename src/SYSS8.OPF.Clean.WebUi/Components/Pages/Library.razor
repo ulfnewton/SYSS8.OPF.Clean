@@ -1,10 +1,12 @@
-
 @page "/library"
 @using SYSS8.OPF.Clean.WebApi.Contracts
 @inject ApiClient Api
 @inject AuthState Auth
 @inject IUiStatus UI
 @using SYSS8.OPF.Clean.WebUi.Components.Shared
+@using SYSS8.OPF.Clean.WebUi.Components.Ui
+
+<PageTitle>Authors</PageTitle>
 
 <h1 class="h3 mb-4">Authors</h1>
 
@@ -16,11 +18,12 @@
 }
 else
 {
+    @* Återanvändbar listvy: fokus i övningen ligger på felhantering, inte markup *@
     <EntityList TItem="AuthorDTO" Title="Authors" Items="_authors"
                 Toolbar="@(RenderToolbar())"
                 ItemTemplate="@(a => RenderAuthorCard(a))" />
 
-    <!-- Create Modal -->
+    @* Enkel create-modal (Bootstrap). Ingen JS-interop behövs i övningen *@
     <div class="modal fade" id="createAuthorModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -53,6 +56,7 @@ else
 
     RenderFragment RenderToolbar() => __builder =>
     {
+        // UI speglar serverns roller (Lärare/Admin) så att förbjudna åtgärder inte exponeras i onödan
         if (Auth.IsAuthenticated && (Auth.Role?.Equals("Lärare", StringComparison.OrdinalIgnoreCase) == true
             || Auth.Role?.Equals("Admin", StringComparison.OrdinalIgnoreCase) == true))
         {
@@ -67,6 +71,7 @@ else
 
     RenderFragment RenderAuthorCard(AuthorDTO a) => __builder =>
     {
+        @* Minimal presentation—det viktiga i övningen är att se tydliga fel vid t.ex. dubblett *@
         <div class="card h-100">
             <div class="card-body">
                 <h2 class="h5 card-title">@a.Name</h2>
@@ -77,7 +82,13 @@ else
     async Task Load()
     {
         try { UI.Busy(true); _authors = await Api.GetAuthorAsync(); }
-        catch (ApiProblemException ex) {UI.SetError(new UiError(ex.Problem?.Title ?? "Load failed", ex.Problem?.Detail ?? ex.Message));}
+        catch (ApiProblemException ex)
+        {
+            @* Alla fel från listan (401/403/404/…) visas i alerten via UiStatus *@
+            UI.SetError(new UiError(
+                ex.Problem?.Title ?? "Load failed",
+                ex.Problem?.Detail ?? ex.Message));
+        }
         finally { UI.Busy(false); }
     }
 
@@ -88,15 +99,29 @@ else
             UI.Busy(true);
             await Api.CreateAuthorAsync(_create.Name);
             _create = new();
-            await Load();
-            // User can close the modal; we avoid custom JS interop.
+            await Load(); // uppdatera listan efter lyckad skapning
         }
         catch (ApiProblemException ex) when (ex.Status == 401)
-        { UI.SetError(new UiError(ex.Problem?.Title ?? "Not authenticated", ex.Problem?.Detail ?? ex.Message ?? "Sign in to create authors.")); }
+        {
+            @* 401: inte inloggad—visa tydligt vad som krävs *@
+            UI.SetError(new UiError(
+                ex.Problem?.Title ?? "Not authenticated",
+                ex.Problem?.Detail ?? ex.Message ?? "Sign in to create authors."));
+        }
         catch (ApiProblemException ex) when (ex.Status == 403)
-        { UI.SetError(new UiError(ex.Problem?.Title ?? "Forbidden", ex.Problem?.Detail ?? ex.Message ?? "Requires Teacher or Admin.")); }
+        {
+            @* 403: inloggad men saknar roll—kräver Lärare eller Admin *@
+            UI.SetError(new UiError(
+                ex.Problem?.Title ?? "Forbidden",
+                ex.Problem?.Detail ?? ex.Message ?? "Requires Teacher or Admin."));
+        }
         catch (ApiProblemException ex)
-        { UI.SetError(new UiError(ex.Problem?.Title ?? "Error", ex.Problem?.Detail ?? ex.Message)); }
+        {
+            @* Övriga fel (t.ex. 409 dubblett) visas med Problem Details (Title + Detail) *@
+            UI.SetError(new UiError(
+                ex.Problem?.Title ?? "Error",
+                ex.Problem?.Detail ?? ex.Message));
+        }
         finally { UI.Busy(false); }
     }
 

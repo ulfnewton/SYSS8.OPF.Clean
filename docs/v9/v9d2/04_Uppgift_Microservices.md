@@ -1,7 +1,7 @@
 
 # Uppgift: Microservices som tankesätt (med Minimal API)
 
-**Syfte.** Att pröva ansvar, gränser och kontrakt utan att bygga riktiga microservices. Övningen anknyter till microservices‑avsnitten i *Systemtänkande_v9d2.pptx*. citeturn2search1
+**Syfte.** Att pröva ansvar, gränser och kontrakt utan att bygga riktiga microservices. Övningen anknyter till microservices‑avsnitten i *Systemtänkande_v9d2.pdf*.
 
 **Vad du gör.**
 1. Välj två områden i ert system (t.ex. **Thread** och **Comment**).

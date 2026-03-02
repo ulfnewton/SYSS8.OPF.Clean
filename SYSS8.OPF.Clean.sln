@@ -98,6 +98,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Workshop", "2. Workshop"
 		docs\v7\Dag1\2-workshop\3-tasks.md = docs\v7\Dag1\2-workshop\3-tasks.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v9", "v9", "{1030C969-04E4-4231-B80D-6F72C7F3DECE}"
+	ProjectSection(SolutionItems) = preProject
+		docs\v9\v9d2\01_Plan_for_dagen.md = docs\v9\v9d2\01_Plan_for_dagen.md
+		docs\v9\v9d2\02_Uppgift_C4.md = docs\v9\v9d2\02_Uppgift_C4.md
+		docs\v9\v9d2\03_Uppgift_ADR.md = docs\v9\v9d2\03_Uppgift_ADR.md
+		docs\v9\v9d2\04_Uppgift_Microservices.md = docs\v9\v9d2\04_Uppgift_Microservices.md
+		docs\v9\v9d2\05_Exit_reflection.md = docs\v9\v9d2\05_Exit_reflection.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +153,7 @@ Global
 		{D5208F7C-E129-4DE4-BA64-1DF2DE0D1743} = {BB63DC20-34BF-404D-A3AF-5B45235080D8}
 		{8CC39E25-F303-48EE-A210-69B16FFD8E9D} = {742647A6-A656-4311-8D01-5450F6DB8425}
 		{F3AFE957-30BA-425A-9914-EFCC1F01410D} = {742647A6-A656-4311-8D01-5450F6DB8425}
+		{1030C969-04E4-4231-B80D-6F72C7F3DECE} = {CE5B6B7F-6DD8-4547-9C95-19D1D0B9F029}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9188685-E034-4B07-9FC8-8360CFB56639}

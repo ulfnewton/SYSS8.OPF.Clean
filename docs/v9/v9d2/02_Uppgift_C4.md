@@ -1,7 +1,7 @@
 
 # Uppgift: C4 – System → Containers → Components
 
-**Syfte.** Att förstå systemet som helhet genom att berätta om det på tre nivåer – från omvärldsrelationer till komponentansvar. Övningen bygger på C4‑avsnitten i *Systemtänkande_v9d2.pptx*. citeturn2search1
+**Syfte.** Att förstå systemet som helhet genom att berätta om det på tre nivåer – från omvärldsrelationer till komponentansvar. Övningen bygger på C4‑avsnitten i *Systemtänkande_v9d2.pdf*.
 
 **Vad du gör.**
 Du skapar tre enkla, tydliga bilder:

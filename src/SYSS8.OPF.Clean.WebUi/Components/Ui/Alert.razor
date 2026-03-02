@@ -1,11 +1,24 @@
+@* Visar ett kort fel/meddelande i två nivåer:
+   - Title: vad som gick fel (kort rubrik)
+   - Message: varför/vad som behöver göras (förklaring)
+   Sidorna skickar redan rätt text (Problem Details), så komponenten behöver inte tolka JSON. *@
 
 @if (!string.IsNullOrWhiteSpace(Message))
 {
   <div class="alert @Css d-flex align-items-start gap-2" role="@Role" aria-live="@AriaLive">
     @if (!string.IsNullOrWhiteSpace(Title))
-    { <div><div class="fw-semibold mb-1">@Title</div><div>@Message</div></div> }
-    else { <div>@Message</div> }
+    {
+        <div>
+            <div class="fw-semibold mb-1">@Title</div>
+            <div>@Message</div>
+        </div>
+    }
+    else
+    {
+        <div>@Message</div>
+    }
 
+    @* Stäng-knapp så att föräldern (t.ex. layouten) kan nollställa Ui.Error utan extra JS *@
     @if (Dismissable)
     {
         <button type="button" class="btn-close ms-auto" aria-label="Close" @onclick="OnClose"></button>
@@ -21,7 +34,10 @@
   [Parameter] public string Role { get; set; } = "status";
   [Parameter] public string AriaLive { get; set; } = "polite";
   [Parameter] public EventCallback OnDismiss { get; set; }
+
   string Css => Severity?.ToLowerInvariant() switch {
-    "success"=>"alert-success","warning"=>"alert-warning","danger"=>"alert-danger",_=>"alert-info"};
+    "success" => "alert-success", "warning" => "alert-warning",
+    "danger"  => "alert-danger",  _        => "alert-info"};
+
   Task OnClose() => OnDismiss.InvokeAsync();
 }

@@ -1,7 +1,7 @@
 
 # Uppgift: ADR – Architectural Decision Record
 
-**Syfte.** Att motivera ett beslut som påverkar systemet som helhet och göra resonemanget begripligt för andra utvecklare. Övningen knyter an till ADR‑delen i *Systemtänkande_v9d2.pptx*. citeturn2search1
+**Syfte.** Att motivera ett beslut som påverkar systemet som helhet och göra resonemanget begripligt för andra utvecklare. Övningen knyter an till ADR‑delen i *Systemtänkande_v9d2.pdf*.
 
 **Vad du gör.**
 Välj ett beslut som har systemkonsekvenser och skriv en ADR. Välj gärna något av dessa ämnen: statuskodspolicy (201/400/404/409/204), ProblemDetails som felmodell, Minimal API framför MVC, eller varför EF Core ligger i Infrastructure.
