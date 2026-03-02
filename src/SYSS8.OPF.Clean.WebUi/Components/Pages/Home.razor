@@ -1,4 +1,3 @@
-
 @page "/"
 @inject ApiClient Api
 @inject ITokenStore Tokens
@@ -37,13 +36,20 @@
         try
         {
             UI.Busy(true);
+
             var res = await Api.LoginAsync(_input.Email, _input.Password);
+
+            // Token lagras centralt och läggs på automatiskt (Authorization: Bearer ...) via HttpClient-handlern
             Tokens.SetToken(res.Token);
+
+            // Viktigt: vi tar roll och namn från servern (säkert och sant), inte från formuläret
             Auth.SignIn(role: res.Role, preferredName: res.Email ?? "");
+
             Nav.NavigateTo("/library");
         }
         catch (ApiProblemException ex)
         {
+            @* Misslyckad inloggning: visa Problem Details i en alert (rubrik + förklaring) *@
             UI.SetError(new UiError(
                 ex.Problem?.Title ?? "Sign-in failed",
                 ex.Problem?.Detail ?? ex.Message
@@ -54,5 +60,6 @@
             UI.Busy(false);
         }
     }
+
     public class Input { public string Email { get; set; } = ""; public string Password { get; set; } = ""; }
 }
