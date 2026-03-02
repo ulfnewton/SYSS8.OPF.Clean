@@ -44,7 +44,10 @@
         }
         catch (ApiProblemException ex)
         {
-            UI.SetError(new UiError("Sign-in failed", ex.Message));
+            UI.SetError(new UiError(
+                ex.Problem?.Title ?? "Sign-in failed",
+                ex.Problem?.Detail ?? ex.Message
+            ));
         }
         finally
         {

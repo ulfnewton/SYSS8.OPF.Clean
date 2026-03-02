@@ -13,7 +13,7 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public ApiClient(IHttpClientFactory httpClientFactory)
             => _httpClientFactory = httpClientFactory;
 
-        // INFO: Role skickas från servern för att UI ska spegla verklig behörighet.
+        // Server returns role so UI reflects real permissions.
         public record LoginResponse(string Token, string Email, string Role);
 
         public async Task<LoginResponse> LoginAsync(string email, string password)
@@ -21,9 +21,8 @@ namespace SYSS8.OPF.Clean.WebUi.Services
             var response = await Client.PostAsJsonAsync("/auth/login", new { email, password });
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
-                throw new ApiProblemException("Inte inloggad eller fel uppgifter") { Status = 401 };
+                await ThrowAsync(response); // ensures Problem is propagated correctly
 
-            // TIPS: EnsureSuccessStatusCode ger en tydlig brytpunkt för oväntade fel.
             response.EnsureSuccessStatusCode();
             return (await response.Content.ReadFromJsonAsync<LoginResponse>())!;
         }
@@ -31,87 +30,86 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public async Task<List<AuthorDTO>> GetAuthorAsync()
         {
             var response = await Client.GetAsync("/authors");
-            // INFO: Vi låter HttpClient kasta om status inte är 2xx för att hålla flödet rakt.
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                await ThrowAsync(response);
+
             return await response.Content.ReadFromJsonAsync<List<AuthorDTO>>() ?? [];
         }
 
         public async Task<AuthorDTO> CreateAuthorAsync(string name)
         {
-            var response = await Client.PostAsJsonAsync(
-                "/authors",
-                new AuthorDTO(name));
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-                throw new ApiProblemException("401 Unauthorized") { Status = 401 };
-            if (response.StatusCode == HttpStatusCode.Forbidden)
-                throw new ApiProblemException("403 Forbidden") { Status = 403 };
+            var response = await Client.PostAsJsonAsync("/authors", new AuthorDTO(name));
 
             if (response.StatusCode == HttpStatusCode.Created)
                 return (await response.Content.ReadFromJsonAsync<AuthorDTO>())!;
 
-            Throw(await response.Content.ReadAsStringAsync());
-            throw new Exception();
+            await ThrowAsync(response);
+            throw new InvalidOperationException("Unreachable");
         }
 
         public async Task<BookDTO> CreateBookAsync(Guid authorId, string title)
         {
-            var response = await Client.PostAsJsonAsync(
-                $"/authors/{authorId}/books",      // FIX: interpolera
-                new BookDTO(title));
+            var response = await Client.PostAsJsonAsync($"/authors/{authorId}/books", new BookDTO(title));
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Created)
-            {
+            if (response.StatusCode == HttpStatusCode.Created)
                 return (await response.Content.ReadFromJsonAsync<BookDTO>())!;
-            }
 
-            Throw(await response.Content.ReadAsStringAsync());
-            return null!;
+            await ThrowAsync(response);
+            throw new InvalidOperationException("Unreachable");
         }
 
         public async Task DeleteAuthorAsync(Guid authorId)
         {
             var response = await Client.DeleteAsync($"/authors/{authorId}");
-
             if (response.IsSuccessStatusCode) return;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                throw new ApiProblemException("Inte inloggad eller fel uppgifter")
-                {
-                    Status = StatusCodes.Status401Unauthorized
-                };
-            }
-
-            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-            {
-                throw new ApiProblemException("Saknar behörighet att ta bort författare")
-                {
-                    Status = StatusCodes.Status403Forbidden
-                };
-            }
-
-            Throw(await response.Content.ReadAsStringAsync());
+            await ThrowAsync(response);
         }
 
-        private void Throw(string json)
+        private static readonly JsonSerializerOptions ProblemJsonOptions = new()
         {
-            try
+            PropertyNameCaseInsensitive = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true
+        };
+
+        private async Task ThrowAsync(HttpResponseMessage response)
+        {
+            ProblemDetailsDto? pd = null;
+
+            var mediaType = response.Content.Headers.ContentType?.MediaType;
+            var looksLikeJson = string.Equals(mediaType, "application/problem+json", StringComparison.OrdinalIgnoreCase)
+                              || string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase);
+
+            if (looksLikeJson)
             {
-                var pd = JsonSerializer.Deserialize<ProblemDetailsDto>(
-                    json, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                    });
-                throw new ApiProblemException($"{pd?.Title}: {pd?.Detail}")
+                try
                 {
-                    Status = pd?.Status ?? 0
-                };
+                    pd = await response.Content.ReadFromJsonAsync<ProblemDetailsDto>(ProblemJsonOptions);
+                }
+                catch
+                {
+                }
             }
-            catch
+
+            if (pd is not null && (!string.IsNullOrWhiteSpace(pd.Title) || !string.IsNullOrWhiteSpace(pd.Detail)))
             {
-                throw new ApiProblemException(json);
+                throw new ApiProblemException(
+                    message: $"{pd.Title}: {pd.Detail}",
+                    problem: pd,
+                    status: pd.Status ?? (int)response.StatusCode
+                );
             }
+
+            var text = await response.Content.ReadAsStringAsync();
+            var safe = string.IsNullOrWhiteSpace(text)
+                ? response.ReasonPhrase ?? $"HTTP {(int)response.StatusCode}"
+                : text.Length > 400 ? text.AsSpan(0, 400).ToString() + "…" : text;
+
+            throw new ApiProblemException(safe)
+            {
+                Status = (int)response.StatusCode
+            };
         }
     }
 
@@ -120,11 +118,22 @@ namespace SYSS8.OPF.Clean.WebUi.Services
         public string? Title { get; set; }
         public string? Detail { get; set; }
         public int? Status { get; set; }
+        public string? Type { get; set; }
     }
 
     public class ApiProblemException : Exception
     {
         public int Status { get; set; }
+
+        public ProblemDetailsDto? Problem { get; }
+
         public ApiProblemException(string? message) : base(message) { }
+
+        public ApiProblemException(string? message, ProblemDetailsDto? problem, int status)
+            : base(message)
+        {
+            Problem = problem;
+            Status = status;
+        }
     }
 }

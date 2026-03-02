@@ -77,7 +77,7 @@ else
     async Task Load()
     {
         try { UI.Busy(true); _authors = await Api.GetAuthorAsync(); }
-        catch (ApiProblemException ex) { UI.SetError(new UiError("Load failed", ex.Message)); }
+        catch (ApiProblemException ex) {UI.SetError(new UiError(ex.Problem?.Title ?? "Load failed", ex.Problem?.Detail ?? ex.Message));}
         finally { UI.Busy(false); }
     }
 
@@ -92,11 +92,11 @@ else
             // User can close the modal; we avoid custom JS interop.
         }
         catch (ApiProblemException ex) when (ex.Status == 401)
-        { UI.SetError(new UiError("Not authenticated", "Sign in to create authors.")); }
+        { UI.SetError(new UiError(ex.Problem?.Title ?? "Not authenticated", ex.Problem?.Detail ?? ex.Message ?? "Sign in to create authors.")); }
         catch (ApiProblemException ex) when (ex.Status == 403)
-        { UI.SetError(new UiError("Forbidden", "Requires Teacher or Admin.")); }
+        { UI.SetError(new UiError(ex.Problem?.Title ?? "Forbidden", ex.Problem?.Detail ?? ex.Message ?? "Requires Teacher or Admin.")); }
         catch (ApiProblemException ex)
-        { UI.SetError(new UiError("Error", ex.Message)); }
+        { UI.SetError(new UiError(ex.Problem?.Title ?? "Error", ex.Problem?.Detail ?? ex.Message)); }
         finally { UI.Busy(false); }
     }
 
